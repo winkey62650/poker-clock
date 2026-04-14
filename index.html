@@ -400,6 +400,77 @@
     .pw-btn:hover { filter:brightness(1.12); }
     .pw-btn:active { transform:scale(0.96); }
 
+    /* ══════════════════════════════════
+       手机竖屏适配
+    ══════════════════════════════════ */
+    @media (max-width: 768px) {
+      body { overflow: auto; }
+
+      /* 顶栏收紧 */
+      .topbar { padding: 10px 16px 8px; }
+      .brand  { font-size: clamp(14px, 4vw, 22px); letter-spacing: 4px; }
+      .table-title { font-size: clamp(16px, 5vw, 26px); }
+      .tv-btn, .cfg-btn { font-size: 18px; padding: 5px 9px; }
+
+      /* 主体改为单列纵向堆叠 */
+      .main {
+        grid-template-columns: 1fr;
+        padding: 0 12px;
+        gap: 0;
+      }
+
+      /* 隐藏分隔线 */
+      .col-cups { border-right: none; border-bottom: 1px solid rgba(201,149,58,0.1); }
+      .col-next { border-left: none; border-top: 1px solid rgba(201,149,58,0.1); }
+
+      /* 列顺序：计时 → 杯数 → 筹码 */
+      .col-cups  { order: 2; padding: 14px 12px 10px; }
+      .col-timer { order: 1; padding: 16px 12px 10px; }
+      .col-next  { order: 3; padding: 10px 12px 14px; }
+
+      /* 计时器缩小到手机合适大小 */
+      .timer-digits { font-size: clamp(72px, 22vw, 110px); }
+      .blind-now-big { font-size: clamp(24px, 8vw, 44px); }
+      .next-value { font-size: clamp(16px, 5vw, 26px); }
+      .level-info { font-size: clamp(11px, 3vw, 15px); }
+
+      /* 杯数 */
+      .cups-label  { font-size: clamp(16px, 5vw, 22px); }
+      .cups-number { font-size: clamp(72px, 22vw, 110px); }
+
+      /* 筹码横排 2×2 → 1行4个更小 */
+      .chips-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 6px;
+      }
+      .chip-wrap svg {
+        width: clamp(52px, 14vw, 80px);
+        height: clamp(52px, 14vw, 80px);
+      }
+      .chip-label { font-size: clamp(11px, 3.5vw, 16px); }
+
+      /* 进度条宽度自适应 */
+      .progress-wrap { width: 70% !important; }
+
+      /* 底栏按钮更大更易点 */
+      .bottombar { padding: 10px 16px 12px; gap: 10px; flex-wrap: wrap; justify-content: center; }
+      .btn { padding: 11px 20px; font-size: 15px; }
+      .settings-inline { justify-content: center; }
+
+      /* 右下角浮动加减，手机上放大 */
+      .cup-float { bottom: 16px; right: 16px; padding: 10px 16px; gap: 14px; }
+      .btn-cup-add, .btn-cup-sub { font-size: 24px; padding: 8px 18px; }
+      .cup-float-label { font-size: 13px; }
+    }
+
+    /* 手机横屏：保持原有TV风格，只缩小字体 */
+    @media (max-width: 900px) and (orientation: landscape) {
+      .timer-digits  { font-size: clamp(60px, 12vw, 110px); }
+      .blind-now-big { font-size: clamp(20px, 4vw, 46px); }
+      .cups-number   { font-size: clamp(60px, 12vw, 110px); }
+      .chip-wrap svg { width: clamp(50px, 8vw, 80px); height: clamp(50px, 8vw, 80px); }
+    }
+
     /* ── 配置按钮 ── */
     .cfg-btn {
       background: none;
