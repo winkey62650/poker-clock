@@ -29,6 +29,7 @@
       padding: 14px 28px 10px;
       border-bottom: 1px solid rgba(201,149,58,0.25);
       flex-shrink: 0;
+      position: relative;
     }
 
     .brand {
@@ -162,11 +163,12 @@
 
     /* 可编辑桌名 */
     .table-title-wrap {
-      display: flex; align-items: center; gap: 6px; margin-bottom: 4px;
+      display: flex; align-items: center; gap: 6px;
+      position: absolute; left: 50%; transform: translateX(-50%);
     }
     .table-title {
       color: #c9953a;
-      font-size: clamp(13px, 1.6vw, 20px);
+      font-size: clamp(22px, 3vw, 42px);
       letter-spacing: 3px;
       text-transform: uppercase;
       outline: none;
@@ -278,8 +280,6 @@
       font-size: clamp(11px, 1.2vw, 15px);
       letter-spacing: 2px;
     }
-    body.tv-mode .cup-float { display: none; }
-
     /* TV模式切换 */
     .tv-btn {
       background: none;
@@ -469,18 +469,15 @@
 
 <!-- 顶栏 -->
 <div class="topbar">
-  <div style="display:flex;align-items:center;gap:10px">
-    <button class="cfg-btn" onclick="openCfg()" title="配置级别">⚙️</button>
-    <div class="brand">27 NUTS · BAR</div>
-  </div>
-  <div style="text-align:center">
-    <div class="level-info" id="level-info">LEVEL 1 / 19</div>
-    <div class="progress-wrap" style="margin:6px auto 0">
-      <div class="progress-fill" id="prog" style="width:100%"></div>
-    </div>
+  <div class="brand">27 NUTS · BAR</div>
+  <div class="table-title-wrap">
+    <span class="table-title" id="table-title" contenteditable="true" spellcheck="false"
+      onkeydown="if(event.key==='Enter'){event.preventDefault();this.blur()}">27 NUTS</span>
+    <span class="edit-icon" onclick="document.getElementById('table-title').focus()">✏️</span>
   </div>
   <div class="topbar-right">
-    <button class="tv-btn" onclick="document.body.classList.toggle('tv-mode')" title="切换TV模式">📺</button>
+    <button class="cfg-btn" onclick="openCfg()" title="配置级别">⚙️</button>
+    <button class="tv-btn" onclick="toggleTV()" title="切换TV模式">📺</button>
   </div>
 </div>
 
@@ -489,17 +486,16 @@
 
   <!-- 左：总杯数 -->
   <div class="col col-cups">
-    <div class="table-title-wrap">
-      <span class="table-title" id="table-title" contenteditable="true" spellcheck="false"
-        onkeydown="if(event.key==='Enter'){event.preventDefault();this.blur()}">27 NUTS</span>
-      <span class="edit-icon" onclick="document.getElementById('table-title').focus()">✏️</span>
-    </div>
     <div class="cups-label">总杯数</div>
     <div class="cups-number" id="cups">0</div>
   </div>
 
   <!-- 中：计时器 -->
   <div class="col col-timer">
+    <div class="level-info" id="level-info">LEVEL 1 / 19</div>
+    <div class="progress-wrap" style="width:180px;margin-bottom:6px">
+      <div class="progress-fill" id="prog" style="width:100%"></div>
+    </div>
     <div class="timer-digits" id="timer">5:00</div>
     <div class="blind-now-big" id="blind-now">100 / 200</div>
     <div class="chips-row" id="chips-row"></div>
@@ -514,7 +510,7 @@
 </div>
 
 <!-- 右下角浮动加减酒 -->
-<div class="cup-float controls-area">
+<div class="cup-float" id="cup-float">
   <span class="cup-float-label">总杯数</span>
   <button class="btn btn-cup-sub" onclick="changeCup(-1)">−</button>
   <button class="btn btn-cup-add" onclick="changeCup(1)">+</button>
@@ -538,7 +534,7 @@
 <script>
   // ── 密码 ──
   function pwSubmit() {
-    if (document.getElementById('pw-input').value === '272727') {
+    if (document.getElementById('pw-input').value === '27') {
       document.getElementById('pw-overlay').classList.add('hidden');
     } else {
       const err = document.getElementById('pw-error');
@@ -700,6 +696,10 @@
     S.duration = v * 60;
     if (!S.running) { S.timeLeft = S.duration; render(); }
   }
+  function toggleTV() {
+    document.body.classList.toggle('tv-mode');
+  }
+
   function playBeep() {
     try {
       const ctx = new (window.AudioContext || window.webkitAudioContext)();
