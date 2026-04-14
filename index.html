@@ -152,8 +152,8 @@
     .table-card {
       background: linear-gradient(170deg, #141414 0%, #1a1a1a 60%, #111 100%);
       border-radius: 18px;
-      padding: 24px 22px 18px;
-      width: 440px;
+      padding: 28px 32px 22px;
+      width: 520px;
       flex-shrink: 0;
       position: relative;
       overflow: hidden;
@@ -551,39 +551,38 @@
 
 <div class="tables-container">
 
-  <!-- ========== 桌子 1 ========== -->
-  <div class="table-card" id="card-red">
+  <div class="table-card">
     <div class="table-title-wrap">
-      <span class="table-title" id="title-red" contenteditable="true" spellcheck="false"
+      <span class="table-title" id="table-title" contenteditable="true" spellcheck="false"
         onkeydown="if(event.key==='Enter'){event.preventDefault();this.blur()}">27 NUTS</span>
-      <span class="edit-icon" onclick="document.getElementById('title-red').focus()">✏️</span>
+      <span class="edit-icon" onclick="document.getElementById('table-title').focus()">✏️</span>
     </div>
 
     <div class="top-row">
       <div class="cups-section">
         <span class="cups-label">总杯数</span>
-        <span class="cups-number" id="cups-red">0</span>
+        <span class="cups-number" id="cups">0</span>
         <div class="cup-btns">
-          <button class="btn btn-cup-sub" onclick="changeCup('red',-1)">−</button>
-          <button class="btn btn-cup-add" onclick="changeCup('red', 1)">+</button>
+          <button class="btn btn-cup-sub" onclick="changeCup(-1)">−</button>
+          <button class="btn btn-cup-add" onclick="changeCup(1)">+</button>
         </div>
       </div>
       <div class="timer-block">
-        <div class="timer-digits" id="timer-red">5:00</div>
+        <div class="timer-digits" id="timer">5:00</div>
       </div>
     </div>
 
-    <div class="progress-wrap"><div class="progress-fill" id="prog-red" style="width:100%"></div></div>
-    <div class="level-indicator" id="level-info-red">LEVEL 1 / 19 · BLIND 100</div>
+    <div class="progress-wrap"><div class="progress-fill" id="prog" style="width:100%"></div></div>
+    <div class="level-indicator" id="level-info">LEVEL 1 / 19 · BLIND 100</div>
 
     <div class="level-bar">
       <div class="blind-now">
         <span class="blind-label">当前盲注</span>
-        <span class="blind-value" id="blind-now-red">100 / 200</span>
+        <span class="blind-value" id="blind-now">100 / 200</span>
       </div>
       <div class="blind-next">
         <span class="next-label">下一级别</span>
-        <span class="next-value" id="blind-next-red">200 / 400</span>
+        <span class="next-value" id="blind-next">200 / 400</span>
       </div>
     </div>
 
@@ -595,79 +594,19 @@
     </div>
 
     <div class="controls">
-      <button class="btn btn-start" onclick="startTimer('red')">开始</button>
-      <button class="btn btn-pause" onclick="pauseTimer('red')">暂停</button>
-      <button class="btn btn-reset" onclick="resetTimer('red')">重置</button>
+      <button class="btn btn-start" onclick="startTimer()">开始</button>
+      <button class="btn btn-pause" onclick="pauseTimer()">暂停</button>
+      <button class="btn btn-reset" onclick="resetTimer()">重置</button>
     </div>
 
     <div class="settings-row">
       <span class="settings-label">每级时间（分钟）</span>
-      <input class="settings-input" type="number" id="dur-red" value="5" min="1" max="120" onchange="setDuration('red')">
+      <input class="settings-input" type="number" id="dur" value="5" min="1" max="120" onchange="setDuration()">
     </div>
 
-    <div class="finished-overlay" id="fin-red">
+    <div class="finished-overlay" id="fin">
       <div class="finished-text">GAME OVER</div>
-      <button class="btn btn-reset" onclick="resetTimer('red')">重新开始</button>
-    </div>
-  </div>
-
-  <!-- ========== 桌子 2 ========== -->
-  <div class="table-card" id="card-green">
-    <div class="table-title-wrap">
-      <span class="table-title" id="title-green" contenteditable="true" spellcheck="false"
-        onkeydown="if(event.key==='Enter'){event.preventDefault();this.blur()}">27 NUTS</span>
-      <span class="edit-icon" onclick="document.getElementById('title-green').focus()">✏️</span>
-    </div>
-
-    <div class="top-row">
-      <div class="cups-section">
-        <span class="cups-label">总杯数</span>
-        <span class="cups-number" id="cups-green">0</span>
-        <div class="cup-btns">
-          <button class="btn btn-cup-sub" onclick="changeCup('green',-1)">−</button>
-          <button class="btn btn-cup-add" onclick="changeCup('green', 1)">+</button>
-        </div>
-      </div>
-      <div class="timer-block">
-        <div class="timer-digits" id="timer-green">5:00</div>
-      </div>
-    </div>
-
-    <div class="progress-wrap"><div class="progress-fill" id="prog-green" style="width:100%"></div></div>
-    <div class="level-indicator" id="level-info-green">LEVEL 1 / 19 · BLIND 100</div>
-
-    <div class="level-bar">
-      <div class="blind-now">
-        <span class="blind-label">当前盲注</span>
-        <span class="blind-value" id="blind-now-green">100 / 200</span>
-      </div>
-      <div class="blind-next">
-        <span class="next-label">下一级别</span>
-        <span class="next-value" id="blind-next-green">200 / 400</span>
-      </div>
-    </div>
-
-    <div class="chips-row">
-      <div class="chip c-silver"><div class="chip-face"><div class="chip-num">27</div><div class="chip-nuts">NUTS·BAR</div><div class="chip-val">100</div></div></div>
-      <div class="chip c-orange"><div class="chip-face"><div class="chip-num">27</div><div class="chip-nuts">NUTS·BAR</div><div class="chip-val">1000</div></div></div>
-      <div class="chip c-red">   <div class="chip-face"><div class="chip-num">27</div><div class="chip-nuts">NUTS·BAR</div><div class="chip-val">5000</div></div></div>
-      <div class="chip c-purple"><div class="chip-face"><div class="chip-num">27</div><div class="chip-nuts">NUTS·BAR</div><div class="chip-val">20000</div></div></div>
-    </div>
-
-    <div class="controls">
-      <button class="btn btn-start" onclick="startTimer('green')">开始</button>
-      <button class="btn btn-pause" onclick="pauseTimer('green')">暂停</button>
-      <button class="btn btn-reset" onclick="resetTimer('green')">重置</button>
-    </div>
-
-    <div class="settings-row">
-      <span class="settings-label">每级时间（分钟）</span>
-      <input class="settings-input" type="number" id="dur-green" value="5" min="1" max="120" onchange="setDuration('green')">
-    </div>
-
-    <div class="finished-overlay" id="fin-green">
-      <div class="finished-text">GAME OVER</div>
-      <button class="btn btn-reset" onclick="resetTimer('green')">重新开始</button>
+      <button class="btn btn-reset" onclick="resetTimer()">重新开始</button>
     </div>
   </div>
 
@@ -693,85 +632,75 @@
   const BLINDS = [];
   for (let sb = 100; sb <= 1900; sb += 100) BLINDS.push({ sb, bb: sb * 2 });
 
-  const state = {
-    red:   { cups:0, level:0, timeLeft:300, duration:300, running:false, iv:null },
-    green: { cups:0, level:0, timeLeft:300, duration:300, running:false, iv:null }
-  };
+  const S = { cups:0, level:0, timeLeft:300, duration:300, running:false, iv:null };
 
   function fmt(sec) {
     const m = Math.floor(sec / 60), s = sec % 60;
     return `${m}:${s.toString().padStart(2,'0')}`;
   }
 
-  function render(id) {
-    const t = state[id];
-    const b = BLINDS[t.level];
-    const nb = t.level < BLINDS.length - 1 ? BLINDS[t.level + 1] : null;
+  function render() {
+    const b  = BLINDS[S.level];
+    const nb = S.level < BLINDS.length - 1 ? BLINDS[S.level + 1] : null;
 
-    const el = document.getElementById(`timer-${id}`);
-    el.textContent = fmt(t.timeLeft);
-    el.className = 'timer-digits' + (t.timeLeft <= 30 && t.running ? ' warning' : '');
+    const el = document.getElementById('timer');
+    el.textContent = fmt(S.timeLeft);
+    el.className = 'timer-digits' + (S.timeLeft <= 30 && S.running ? ' warning' : '');
 
-    document.getElementById(`prog-${id}`).style.width = (t.timeLeft / t.duration * 100) + '%';
-    document.getElementById(`blind-now-${id}`).textContent = `${b.sb.toLocaleString()} / ${b.bb.toLocaleString()}`;
-    document.getElementById(`blind-next-${id}`).textContent = nb
+    document.getElementById('prog').style.width = (S.timeLeft / S.duration * 100) + '%';
+    document.getElementById('blind-now').textContent  = `${b.sb.toLocaleString()} / ${b.bb.toLocaleString()}`;
+    document.getElementById('blind-next').textContent = nb
       ? `${nb.sb.toLocaleString()} / ${nb.bb.toLocaleString()}` : '最终级别';
-    document.getElementById(`level-info-${id}`).textContent =
-      `LEVEL ${t.level + 1} / ${BLINDS.length} · BLIND ${b.sb}`;
+    document.getElementById('level-info').textContent =
+      `LEVEL ${S.level + 1} / ${BLINDS.length} · BLIND ${b.sb}`;
   }
 
-  function tick(id) {
-    const t = state[id];
-    if (t.timeLeft > 0) {
-      t.timeLeft--;
-    } else if (t.level < BLINDS.length - 1) {
-      t.level++;
-      t.timeLeft = t.duration;
+  function tick() {
+    if (S.timeLeft > 0) {
+      S.timeLeft--;
+    } else if (S.level < BLINDS.length - 1) {
+      S.level++;
+      S.timeLeft = S.duration;
       playBeep();
     } else {
-      clearInterval(t.iv);
-      t.running = false;
-      document.getElementById(`fin-${id}`).classList.add('show');
+      clearInterval(S.iv);
+      S.running = false;
+      document.getElementById('fin').classList.add('show');
     }
-    render(id);
+    render();
   }
 
-  function startTimer(id) {
-    const t = state[id];
-    if (t.running) return;
-    t.running = true;
-    t.iv = setInterval(() => tick(id), 1000);
+  function startTimer() {
+    if (S.running) return;
+    S.running = true;
+    S.iv = setInterval(tick, 1000);
   }
 
-  function pauseTimer(id) {
-    const t = state[id];
-    if (!t.running) return;
-    clearInterval(t.iv);
-    t.running = false;
+  function pauseTimer() {
+    if (!S.running) return;
+    clearInterval(S.iv);
+    S.running = false;
   }
 
-  function resetTimer(id) {
-    const t = state[id];
-    clearInterval(t.iv);
-    t.running = false;
-    t.level = 0;
-    t.timeLeft = t.duration;
-    document.getElementById(`fin-${id}`).classList.remove('show');
-    render(id);
+  function resetTimer() {
+    clearInterval(S.iv);
+    S.running = false;
+    S.level = 0;
+    S.timeLeft = S.duration;
+    document.getElementById('fin').classList.remove('show');
+    render();
   }
 
-  function changeCup(id, delta) {
-    const t = state[id];
-    t.cups = Math.max(0, t.cups + delta);
-    document.getElementById(`cups-${id}`).textContent = t.cups;
+  function changeCup(delta) {
+    S.cups = Math.max(0, S.cups + delta);
+    document.getElementById('cups').textContent = S.cups;
   }
 
-  function setDuration(id) {
-    const val = parseInt(document.getElementById(`dur-${id}`).value, 10);
+  function setDuration() {
+    const val = parseInt(document.getElementById('dur').value, 10);
     if (!val || val < 1) return;
-    const t = state[id];
-    t.duration = val * 60;
-    if (!t.running) { t.timeLeft = t.duration; render(id); }
+    S.duration = val * 60;
+    if (!S.running) { S.timeLeft = S.duration; render(); }
   }
 
   function playBeep() {
@@ -788,8 +717,7 @@
     } catch(e) {}
   }
 
-  render('red');
-  render('green');
+  render();
 </script>
 </body>
 </html>
