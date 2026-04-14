@@ -6,294 +6,54 @@
   <title>27 NUTS</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&display=swap');
+    * { margin:0; padding:0; box-sizing:border-box; }
 
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-
-    /* ── 密码浮窗 ── */
-    #pw-overlay {
-      position: fixed;
-      inset: 0;
-      z-index: 9999;
-      background: rgba(0,0,0,0.75);
-      backdrop-filter: blur(6px);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    #pw-overlay.hidden { display: none; }
-
-    .pw-box {
-      background: linear-gradient(160deg, #1c1c1c, #141414);
-      border: 1px solid rgba(201,149,58,0.4);
-      border-radius: 14px;
-      padding: 32px 28px 24px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 16px;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.7);
-      min-width: 260px;
-      position: relative;
-    }
-    .pw-box::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0; height: 2px;
-      border-radius: 14px 14px 0 0;
-      background: linear-gradient(90deg, transparent, #c9953a, transparent);
-    }
-
-    .pw-title {
-      color: #c9953a;
-      font-size: 15px;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-    }
-
-    .pw-input {
-      background: rgba(0,0,0,0.4);
-      border: 1px solid rgba(201,149,58,0.3);
-      border-radius: 8px;
-      color: #f5f0e8;
-      font-family: 'Oswald', sans-serif;
-      font-size: 22px;
-      letter-spacing: 6px;
-      text-align: center;
-      padding: 10px 16px;
-      width: 100%;
-      outline: none;
-      transition: border-color 0.2s;
-    }
-    .pw-input:focus { border-color: #c9953a; }
-
-    .pw-error {
-      color: #e05a3a;
-      font-size: 12px;
-      letter-spacing: 2px;
-      height: 16px;
-      text-transform: uppercase;
-    }
-    .pw-error.shake {
-      animation: pwshake 0.35s ease;
-    }
-    @keyframes pwshake {
-      0%,100% { transform: translateX(0); }
-      20%      { transform: translateX(-7px); }
-      40%      { transform: translateX(7px); }
-      60%      { transform: translateX(-5px); }
-      80%      { transform: translateX(5px); }
-    }
-
-    .pw-btn {
-      background: linear-gradient(135deg, #a07018, #c9953a);
-      border: none;
-      border-radius: 8px;
-      color: #0c0c0c;
-      font-family: 'Oswald', sans-serif;
-      font-size: 14px;
-      font-weight: 700;
-      letter-spacing: 2px;
-      padding: 10px 32px;
-      cursor: pointer;
-      transition: filter 0.15s, transform 0.12s;
-    }
-    .pw-btn:hover  { filter: brightness(1.12); }
-    .pw-btn:active { transform: scale(0.96); }
-
-    /* ── 底色：黑色桌布质感 ── */
+    /* ── 背景 ── */
     body {
-      background-color: #0c0c0c;
+      background: #0c0c0c;
       background-image:
-        repeating-linear-gradient(45deg,  rgba(255,255,255,0.012) 0px, rgba(255,255,255,0.012) 1px, transparent 1px, transparent 6px),
-        repeating-linear-gradient(-45deg, rgba(255,255,255,0.012) 0px, rgba(255,255,255,0.012) 1px, transparent 1px, transparent 6px);
-      font-family: 'Oswald', 'Arial Black', Arial, sans-serif;
+        repeating-linear-gradient(45deg,  rgba(255,255,255,0.01) 0 1px, transparent 1px 6px),
+        repeating-linear-gradient(-45deg, rgba(255,255,255,0.01) 0 1px, transparent 1px 6px);
+      font-family: 'Oswald', 'Arial Black', sans-serif;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      padding: 24px 12px 20px;
-      gap: 20px;
-    }
-
-    /* ── 页面大标题 ── */
-    .page-title {
-      color: #c9953a;
-      font-size: 42px;
-      font-weight: 700;
-      letter-spacing: 10px;
-      text-transform: uppercase;
-      text-shadow:
-        0 0 12px rgba(201,149,58,0.7),
-        0 0 40px rgba(201,149,58,0.25);
-      text-align: center;
-      position: relative;
-    }
-
-    .page-title::before,
-    .page-title::after {
-      content: '';
-      display: block;
-      height: 2px;
-      background: linear-gradient(90deg, transparent, #c9953a, transparent);
-      margin: 6px 0;
-    }
-
-    /* ── 两桌容器 ── */
-    .tables-container {
-      display: flex;
-      gap: 22px;
-      flex-wrap: wrap;
-      justify-content: center;
-      width: 100%;
-      max-width: 960px;
-    }
-
-    /* ── 桌子卡片 ── */
-    .table-card {
-      background: linear-gradient(170deg, #141414 0%, #1a1a1a 60%, #111 100%);
-      border-radius: 18px;
-      padding: 28px 32px 22px;
-      width: 520px;
-      flex-shrink: 0;
-      position: relative;
       overflow: hidden;
-      /* 金色边框 */
-      border: 1px solid rgba(201,149,58,0.45);
-      box-shadow:
-        0 0 0 1px rgba(201,149,58,0.12),
-        0 8px 40px rgba(0,0,0,0.7),
-        inset 0 1px 0 rgba(201,149,58,0.15);
     }
 
-    /* 顶部金线 */
-    .table-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 3px;
-      background: linear-gradient(90deg, transparent 0%, #c9953a 30%, #ffd97a 50%, #c9953a 70%, transparent 100%);
-    }
-
-    /* 底部金线 */
-    .table-card::after {
-      content: '';
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      height: 2px;
-      background: linear-gradient(90deg, transparent 0%, rgba(201,149,58,0.5) 50%, transparent 100%);
-    }
-
-    /* ── 桌子标题（可编辑） ── */
-    .table-title-wrap {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      margin-bottom: 18px;
-    }
-
-    .table-title {
-      color: #c9953a;
-      font-size: 28px;
-      font-weight: 700;
-      letter-spacing: 5px;
-      text-transform: uppercase;
-      text-shadow: 0 0 16px rgba(201,149,58,0.8);
-      outline: none;
-      border-bottom: 2px solid transparent;
-      transition: border-color 0.2s, text-shadow 0.2s;
-      cursor: text;
-      min-width: 40px;
-      text-align: center;
-    }
-
-    .table-title:focus {
-      border-bottom: 2px solid #c9953a;
-      text-shadow: 0 0 24px rgba(201,149,58,1);
-    }
-
-    .edit-icon {
-      color: rgba(201,149,58,0.35);
-      font-size: 13px;
-      cursor: pointer;
-      transition: color 0.2s, transform 0.2s;
-    }
-    .edit-icon:hover { color: #c9953a; transform: scale(1.2); }
-
-    /* ── 顶部行：杯数 | 计时 ── */
-    .top-row {
+    /* ── 顶栏 ── */
+    .topbar {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 8px;
-      margin-bottom: 8px;
+      padding: 14px 28px 10px;
+      border-bottom: 1px solid rgba(201,149,58,0.25);
+      flex-shrink: 0;
     }
 
-    .cups-section {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      min-width: 108px;
-    }
-
-    .cups-label {
+    .brand {
       color: #c9953a;
-      font-size: 15px;
+      font-size: clamp(22px, 3vw, 36px);
+      font-weight: 700;
+      letter-spacing: 8px;
+      text-shadow: 0 0 20px rgba(201,149,58,0.6);
+    }
+
+    .level-info {
+      color: rgba(201,149,58,0.65);
+      font-size: clamp(12px, 1.4vw, 18px);
       letter-spacing: 2px;
-      text-transform: uppercase;
+      text-align: center;
     }
 
-    .cups-number {
-      color: #f5f0e8;
-      font-size: 82px;
-      font-weight: 700;
-      line-height: 1;
-      text-shadow: 0 0 20px rgba(245,240,232,0.2);
-    }
-
-    .cup-btns {
-      display: flex;
-      gap: 6px;
-      margin-top: 6px;
-    }
-
-    .timer-block {
-      flex: 1;
-      display: flex;
-      justify-content: flex-end;
-    }
-
-    .timer-digits {
-      font-size: 96px;
-      font-weight: 700;
-      color: #f5f0e8;
-      font-family: 'Courier New', 'Oswald', monospace;
-      line-height: 1;
-      letter-spacing: -4px;
-      text-shadow: 0 0 30px rgba(245,240,232,0.2);
-      transition: color 0.3s;
-    }
-
-    .timer-digits.warning {
-      color: #e05a3a;
-      text-shadow: 0 0 20px rgba(224,90,58,0.8);
-      animation: blink 0.55s infinite;
-    }
-
-    @keyframes blink {
-      0%,100% { opacity: 1; }
-      50%      { opacity: 0.35; }
-    }
-
-    /* ── 进度条 ── */
     .progress-wrap {
-      height: 4px;
-      background: rgba(255,255,255,0.06);
+      width: 180px;
+      height: 5px;
+      background: rgba(255,255,255,0.08);
       border-radius: 4px;
-      margin-bottom: 10px;
       overflow: hidden;
+      margin-top: 5px;
     }
-
     .progress-fill {
       height: 100%;
       border-radius: 4px;
@@ -301,141 +61,169 @@
       transition: width 1s linear;
     }
 
-    /* ── 级别行 ── */
-    .level-indicator {
-      text-align: center;
-      color: rgba(201,149,58,0.55);
-      font-size: 12px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      margin-bottom: 10px;
-    }
-
-    /* ── 盲注栏 ── */
-    .level-bar {
-      background: rgba(0,0,0,0.35);
-      border: 1px solid rgba(201,149,58,0.18);
-      border-radius: 10px;
-      padding: 12px 16px;
-      margin: 0 0 10px;
+    .topbar-right {
       display: flex;
-      align-items: center;
-      justify-content: space-between;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 4px;
     }
 
-    .blind-now { display: flex; flex-direction: column; align-items: flex-start; }
-    .blind-label { color: rgba(201,149,58,0.55); font-size: 11px; letter-spacing: 2px; text-transform: uppercase; }
-    .blind-value { color: #f5f0e8; font-size: 36px; font-weight: 700; letter-spacing: 1px; }
-
-    .blind-next { display: flex; flex-direction: column; align-items: flex-end; }
-    .next-label { color: #c9953a; font-size: 12px; letter-spacing: 1px; }
-    .next-value { color: rgba(245,240,232,0.6); font-size: 20px; font-weight: 600; }
-
-    /* ── 筹码 ── */
-    .chips-row {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      margin: 6px 0 10px;
+    /* ── 主内容：三列 ── */
+    .main {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 1.6fr 1fr;
+      gap: 0;
+      padding: 0 24px;
+      min-height: 0;
     }
 
-    .chip {
-      width: 66px;
-      height: 66px;
-      border-radius: 50%;
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 5px 16px rgba(0,0,0,0.6), 0 2px 4px rgba(0,0,0,0.4);
-      user-select: none;
-      flex-shrink: 0;
-    }
-
-    .chip-face {
-      position: absolute;
-      inset: 8px;
-      border-radius: 50%;
+    .col {
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      padding: 16px 12px;
     }
 
-    .chip-num  { font-size: 21px; font-weight: 900; line-height: 1; letter-spacing: -1px; }
-    .chip-nuts { font-size: 6.5px; font-weight: 700; letter-spacing: 1.2px; }
-    .chip-val  { font-size: 8px; font-weight: 600; opacity: 0.75; margin-top: 1px; letter-spacing: 0.5px; }
-
-    /* ─ 银色 ─ */
-    .c-silver {
-      background: conic-gradient(
-        #636e78 0deg 15deg,#b8c2cc 15deg 30deg,#636e78 30deg 45deg,#b8c2cc 45deg 60deg,
-        #636e78 60deg 75deg,#b8c2cc 75deg 90deg,#636e78 90deg 105deg,#b8c2cc 105deg 120deg,
-        #636e78 120deg 135deg,#b8c2cc 135deg 150deg,#636e78 150deg 165deg,#b8c2cc 165deg 180deg,
-        #636e78 180deg 195deg,#b8c2cc 195deg 210deg,#636e78 210deg 225deg,#b8c2cc 225deg 240deg,
-        #636e78 240deg 255deg,#b8c2cc 255deg 270deg,#636e78 270deg 285deg,#b8c2cc 285deg 300deg,
-        #636e78 300deg 315deg,#b8c2cc 315deg 330deg,#636e78 330deg 345deg,#b8c2cc 345deg 360deg
-      );
+    /* 左列 — 总杯数 */
+    .col-cups {
+      border-right: 1px solid rgba(201,149,58,0.15);
     }
-    .c-silver .chip-face { background: radial-gradient(circle at 35% 30%, #d2dae2, #98a4ae); box-shadow: inset 0 2px 5px rgba(255,255,255,0.45), inset 0 -2px 4px rgba(0,0,0,0.2); }
-    .c-silver .chip-num  { color: #1a2230; }
-    .c-silver .chip-nuts { color: #2a3440; }
-    .c-silver .chip-val  { color: #2a3440; }
 
-    /* ─ 橙金 ─ */
-    .c-orange {
-      background: conic-gradient(
-        #7a3c10 0deg 15deg,#e8984a 15deg 30deg,#7a3c10 30deg 45deg,#e8984a 45deg 60deg,
-        #7a3c10 60deg 75deg,#e8984a 75deg 90deg,#7a3c10 90deg 105deg,#e8984a 105deg 120deg,
-        #7a3c10 120deg 135deg,#e8984a 135deg 150deg,#7a3c10 150deg 165deg,#e8984a 165deg 180deg,
-        #7a3c10 180deg 195deg,#e8984a 195deg 210deg,#7a3c10 210deg 225deg,#e8984a 225deg 240deg,
-        #7a3c10 240deg 255deg,#e8984a 255deg 270deg,#7a3c10 270deg 285deg,#e8984a 285deg 300deg,
-        #7a3c10 300deg 315deg,#e8984a 315deg 330deg,#7a3c10 330deg 345deg,#e8984a 345deg 360deg
-      );
+    .cups-label {
+      color: #c9953a;
+      font-size: clamp(13px, 1.6vw, 20px);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 4px;
     }
-    .c-orange .chip-face { background: radial-gradient(circle at 35% 30%, #f0a860, #c07028); box-shadow: inset 0 2px 5px rgba(255,220,140,0.45), inset 0 -2px 4px rgba(0,0,0,0.25); }
-    .c-orange .chip-num  { color: #fff8ee; }
-    .c-orange .chip-nuts { color: #ffe8c0; }
-    .c-orange .chip-val  { color: #ffe8c0; }
 
-    /* ─ 玫红 ─ */
-    .c-red {
-      background: conic-gradient(
-        #6e0820 0deg 15deg,#d85878 15deg 30deg,#6e0820 30deg 45deg,#d85878 45deg 60deg,
-        #6e0820 60deg 75deg,#d85878 75deg 90deg,#6e0820 90deg 105deg,#d85878 105deg 120deg,
-        #6e0820 120deg 135deg,#d85878 135deg 150deg,#6e0820 150deg 165deg,#d85878 165deg 180deg,
-        #6e0820 180deg 195deg,#d85878 195deg 210deg,#6e0820 210deg 225deg,#d85878 225deg 240deg,
-        #6e0820 240deg 255deg,#d85878 255deg 270deg,#6e0820 270deg 285deg,#d85878 285deg 300deg,
-        #6e0820 300deg 315deg,#d85878 315deg 330deg,#6e0820 330deg 345deg,#d85878 345deg 360deg
-      );
+    .cups-number {
+      color: #f5f0e8;
+      font-size: clamp(80px, 14vw, 160px);
+      font-weight: 700;
+      line-height: 1;
+      text-shadow: 0 0 40px rgba(245,240,232,0.15);
     }
-    .c-red .chip-face { background: radial-gradient(circle at 35% 30%, #e87090, #b02848); box-shadow: inset 0 2px 5px rgba(255,180,180,0.35), inset 0 -2px 4px rgba(0,0,0,0.25); }
-    .c-red .chip-num  { color: #fff0f4; }
-    .c-red .chip-nuts { color: #ffd8e0; }
-    .c-red .chip-val  { color: #ffd8e0; }
 
-    /* ─ 薰衣草紫 ─ */
-    .c-purple {
-      background: conic-gradient(
-        #383870 0deg 15deg,#9898d0 15deg 30deg,#383870 30deg 45deg,#9898d0 45deg 60deg,
-        #383870 60deg 75deg,#9898d0 75deg 90deg,#383870 90deg 105deg,#9898d0 105deg 120deg,
-        #383870 120deg 135deg,#9898d0 135deg 150deg,#383870 150deg 165deg,#9898d0 165deg 180deg,
-        #383870 180deg 195deg,#9898d0 195deg 210deg,#383870 210deg 225deg,#9898d0 225deg 240deg,
-        #383870 240deg 255deg,#9898d0 255deg 270deg,#383870 270deg 285deg,#9898d0 285deg 300deg,
-        #383870 300deg 315deg,#9898d0 315deg 330deg,#383870 330deg 345deg,#9898d0 345deg 360deg
-      );
-    }
-    .c-purple .chip-face { background: radial-gradient(circle at 35% 30%, #b0b0e0, #6868a0); box-shadow: inset 0 2px 5px rgba(200,200,255,0.35), inset 0 -2px 4px rgba(0,0,0,0.25); }
-    .c-purple .chip-num  { color: #f8f8ff; }
-    .c-purple .chip-nuts { color: #e0e0ff; }
-    .c-purple .chip-val  { color: #e0e0ff; }
-
-    /* ── 控制按钮 ── */
-    .controls {
+    .cup-btns {
       display: flex;
-      gap: 8px;
-      justify-content: center;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    /* 中列 — 计时 */
+    .col-timer { gap: 8px; }
+
+    .timer-digits {
+      font-size: clamp(80px, 16vw, 180px);
+      font-weight: 700;
+      color: #f5f0e8;
+      font-family: 'Courier New', monospace;
+      line-height: 1;
+      letter-spacing: -4px;
+      text-shadow: 0 0 40px rgba(245,240,232,0.2);
+      transition: color 0.3s;
+    }
+    .timer-digits.warning {
+      color: #e05a3a;
+      text-shadow: 0 0 30px rgba(224,90,58,0.8);
+      animation: blink .55s infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+    .blind-now-big {
+      color: rgba(255,255,255,0.6);
+      font-size: clamp(18px, 3vw, 38px);
+      font-weight: 600;
+      letter-spacing: 2px;
+    }
+
+    /* 右列 — 下一级别 */
+    .col-next {
+      border-left: 1px solid rgba(201,149,58,0.15);
+    }
+
+    .next-label {
+      color: #c9953a;
+      font-size: clamp(12px, 1.4vw, 18px);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .next-value {
+      color: rgba(245,240,232,0.5);
+      font-size: clamp(24px, 4vw, 52px);
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+
+    /* 可编辑桌名 */
+    .table-title-wrap {
+      display: flex; align-items: center; gap: 6px; margin-bottom: 4px;
+    }
+    .table-title {
+      color: #c9953a;
+      font-size: clamp(13px, 1.6vw, 20px);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      outline: none;
+      border-bottom: 1px solid transparent;
+      transition: border-color .2s;
+      cursor: text;
+      min-width: 30px;
+      text-align: center;
+    }
+    .table-title:focus { border-bottom-color: #c9953a; }
+    .edit-icon { color: rgba(201,149,58,.35); font-size:12px; cursor:pointer; }
+    .edit-icon:hover { color:#c9953a; }
+
+    /* ── 底栏 ── */
+    .bottombar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 28px 16px;
+      border-top: 1px solid rgba(201,149,58,0.2);
+      gap: 16px;
+      flex-shrink: 0;
+    }
+
+    /* 筹码行 */
+    .chips-row {
+      display: flex;
+      gap: 14px;
+      align-items: flex-end;
+    }
+
+    .chip-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .chip-wrap svg {
+      width: clamp(52px, 7vw, 80px);
+      height: clamp(52px, 7vw, 80px);
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));
+    }
+
+    .chip-label {
+      color: rgba(255,255,255,0.55);
+      font-size: clamp(9px, 1vw, 13px);
+      letter-spacing: 1px;
+    }
+
+    /* ── 控制区（平板可见，TV模式隐藏）── */
+    .controls-area {
+      display: flex;
+      align-items: center;
+      gap: 10px;
       flex-wrap: wrap;
+      justify-content: flex-end;
     }
 
     .btn {
@@ -444,179 +232,188 @@
       border-radius: 8px;
       cursor: pointer;
       font-family: 'Oswald', sans-serif;
-      font-size: 14px;
+      font-size: clamp(12px, 1.3vw, 16px);
       font-weight: 600;
       letter-spacing: 1.5px;
       text-transform: uppercase;
-      transition: transform 0.12s, filter 0.12s, box-shadow 0.12s;
+      transition: transform .12s, filter .12s;
+      white-space: nowrap;
     }
+    .btn:hover  { transform:scale(1.06); filter:brightness(1.15); }
+    .btn:active { transform:scale(0.95); }
 
-    .btn:hover  { transform: scale(1.05); filter: brightness(1.15); }
-    .btn:active { transform: scale(0.96); }
+    .btn-start  { background:linear-gradient(135deg,#2d6a30,#3d9142); color:#fff; }
+    .btn-pause  { background:linear-gradient(135deg,#7a3d10,#c96820); color:#fff; }
+    .btn-reset  { background:linear-gradient(135deg,#6a1515,#a02020); color:#fff; }
+    .btn-cup-add { background:linear-gradient(135deg,#a07018,#c9953a); color:#0c0c0c; font-size:clamp(16px,2vw,22px); padding:5px 14px; border-radius:8px; font-weight:900; }
+    .btn-cup-sub { background:rgba(255,255,255,0.07); border:1px solid rgba(255,255,255,0.15); color:rgba(255,255,255,0.55); font-size:clamp(16px,2vw,22px); padding:5px 14px; border-radius:8px; font-weight:900; }
 
-    .btn-start { background: linear-gradient(135deg,#2d6a30,#3d9142); color:#fff; box-shadow:0 3px 10px rgba(45,106,48,0.4); }
-    .btn-pause { background: linear-gradient(135deg,#7a3d10,#c96820); color:#fff; box-shadow:0 3px 10px rgba(122,61,16,0.4); }
-    .btn-reset { background: linear-gradient(135deg,#6a1515,#a02020); color:#fff; box-shadow:0 3px 10px rgba(106,21,21,0.4); }
-
-    .btn-cup-add {
-      background: linear-gradient(135deg,#a07018,#c9953a);
-      color: #0c0c0c;
-      font-size: 20px;
-      padding: 4px 14px;
-      border-radius: 7px;
-      font-weight: 900;
-      box-shadow: 0 3px 10px rgba(201,149,58,0.35);
+    .settings-inline {
+      display: flex; align-items: center; gap: 8px;
     }
-    .btn-cup-sub {
-      background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(255,255,255,0.15);
-      color: rgba(255,255,255,0.6);
-      font-size: 20px;
-      padding: 4px 14px;
-      border-radius: 7px;
-      font-weight: 900;
-    }
-
-    /* ── 设置行 ── */
-    .settings-row {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      margin-top: 12px;
-      padding-top: 10px;
-      border-top: 1px solid rgba(201,149,58,0.15);
-    }
-
-    .settings-label { color: rgba(201,149,58,0.5); font-size: 12px; letter-spacing: 1px; text-transform: uppercase; }
-
+    .settings-label { color:rgba(201,149,58,0.5); font-size:12px; letter-spacing:1px; text-transform:uppercase; }
     .settings-input {
-      background: rgba(0,0,0,0.4);
-      border: 1px solid rgba(201,149,58,0.3);
-      color: #c9953a;
-      padding: 5px 8px;
-      border-radius: 6px;
-      width: 62px;
-      text-align: center;
-      font-size: 14px;
-      font-weight: bold;
-      font-family: 'Oswald', sans-serif;
+      background:rgba(0,0,0,0.4); border:1px solid rgba(201,149,58,0.3);
+      color:#c9953a; padding:6px 8px; border-radius:6px; width:52px;
+      text-align:center; font-size:14px; font-family:'Oswald',sans-serif; font-weight:bold;
     }
-    .settings-input:focus { outline: none; border-color: #c9953a; }
+    .settings-input:focus { outline:none; border-color:#c9953a; }
+
+    /* TV模式切换 */
+    .tv-btn {
+      background: none;
+      border: 1px solid rgba(201,149,58,0.3);
+      border-radius: 8px;
+      color: rgba(201,149,58,0.5);
+      cursor: pointer;
+      font-size: 18px;
+      padding: 6px 10px;
+      transition: all .2s;
+    }
+    .tv-btn:hover { color:#c9953a; border-color:#c9953a; }
+
+    /* TV模式：隐藏控制 */
+    body.tv-mode .controls-area { display:none; }
+    body.tv-mode .cup-btns      { display:none; }
+    body.tv-mode .tv-btn        { opacity:.15; }
+    body.tv-mode .tv-btn:hover  { opacity:1; }
 
     /* ── 结束遮罩 ── */
     .finished-overlay {
-      position: absolute;
-      inset: 0;
-      background: rgba(0,0,0,0.88);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      border-radius: 17px;
-      flex-direction: column;
-      gap: 16px;
+      position:fixed; inset:0; background:rgba(0,0,0,0.85);
+      display:none; align-items:center; justify-content:center;
+      flex-direction:column; gap:20px; z-index:100;
     }
-    .finished-overlay.show { display: flex; }
+    .finished-overlay.show { display:flex; }
+    .finished-text { color:#c9953a; font-size:clamp(40px,7vw,80px); font-weight:700; letter-spacing:6px; text-shadow:0 0 40px rgba(201,149,58,0.8); }
 
-    .finished-text {
-      color: #c9953a;
-      font-size: 44px;
-      font-weight: 700;
-      letter-spacing: 4px;
-      text-align: center;
-      text-shadow: 0 0 40px rgba(201,149,58,0.9);
+    /* ── 密码浮窗 ── */
+    #pw-overlay {
+      position:fixed; inset:0; z-index:9999;
+      background:rgba(0,0,0,0.75); backdrop-filter:blur(6px);
+      display:flex; align-items:center; justify-content:center;
     }
+    #pw-overlay.hidden { display:none; }
 
-    /* ── Responsive ── */
-    @media (max-width: 480px) {
-      .table-card    { width: 100%; }
-      .timer-digits  { font-size: 68px; }
-      .cups-number   { font-size: 60px; }
-      .blind-value   { font-size: 26px; }
+    .pw-box {
+      background:linear-gradient(160deg,#1c1c1c,#141414);
+      border:1px solid rgba(201,149,58,0.4); border-radius:14px;
+      padding:32px 28px 24px; display:flex; flex-direction:column;
+      align-items:center; gap:16px; min-width:260px; position:relative;
+      box-shadow:0 20px 60px rgba(0,0,0,0.7);
     }
+    .pw-box::before {
+      content:''; position:absolute; top:0; left:0; right:0; height:2px;
+      border-radius:14px 14px 0 0;
+      background:linear-gradient(90deg,transparent,#c9953a,transparent);
+    }
+    .pw-title { color:#c9953a; font-size:15px; letter-spacing:3px; text-transform:uppercase; }
+    .pw-input {
+      background:rgba(0,0,0,0.4); border:1px solid rgba(201,149,58,0.3);
+      border-radius:8px; color:#f5f0e8; font-family:'Oswald',sans-serif;
+      font-size:22px; letter-spacing:6px; text-align:center;
+      padding:10px 16px; width:100%; outline:none; transition:border-color .2s;
+    }
+    .pw-input:focus { border-color:#c9953a; }
+    .pw-error { color:#e05a3a; font-size:12px; letter-spacing:2px; height:16px; text-transform:uppercase; }
+    .pw-error.shake { animation:pwshake .35s ease; }
+    @keyframes pwshake { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-7px)} 40%{transform:translateX(7px)} 60%{transform:translateX(-5px)} 80%{transform:translateX(5px)} }
+    .pw-btn {
+      background:linear-gradient(135deg,#a07018,#c9953a); border:none; border-radius:8px;
+      color:#0c0c0c; font-family:'Oswald',sans-serif; font-size:14px; font-weight:700;
+      letter-spacing:2px; padding:10px 32px; cursor:pointer; transition:filter .15s,transform .12s;
+    }
+    .pw-btn:hover { filter:brightness(1.12); }
+    .pw-btn:active { transform:scale(0.96); }
   </style>
 </head>
 <body>
 
+<!-- 密码 -->
 <div id="pw-overlay">
   <div class="pw-box">
     <div class="pw-title">请输入密码</div>
-    <input class="pw-input" id="pw-input" type="password" maxlength="10" placeholder="······" autofocus onkeydown="if(event.key==='Enter')pwSubmit()">
+    <input class="pw-input" id="pw-input" type="password" maxlength="10" placeholder="······"
+      autofocus onkeydown="if(event.key==='Enter')pwSubmit()">
     <div class="pw-error" id="pw-error"></div>
     <button class="pw-btn" onclick="pwSubmit()">确认</button>
   </div>
 </div>
 
-<div class="page-title">27 NUTS · BAR</div>
+<!-- 结束遮罩 -->
+<div class="finished-overlay" id="fin">
+  <div class="finished-text">GAME OVER</div>
+  <button class="btn btn-reset" onclick="resetTimer()">重新开始</button>
+</div>
 
-<div class="tables-container">
+<!-- 顶栏 -->
+<div class="topbar">
+  <div class="brand">27 NUTS · BAR</div>
+  <div style="text-align:center">
+    <div class="level-info" id="level-info">LEVEL 1 / 19</div>
+    <div class="progress-wrap" style="margin:6px auto 0">
+      <div class="progress-fill" id="prog" style="width:100%"></div>
+    </div>
+  </div>
+  <div class="topbar-right">
+    <button class="tv-btn" onclick="document.body.classList.toggle('tv-mode')" title="切换TV模式">📺</button>
+  </div>
+</div>
 
-  <div class="table-card">
+<!-- 三列主体 -->
+<div class="main">
+
+  <!-- 左：总杯数 -->
+  <div class="col col-cups">
     <div class="table-title-wrap">
       <span class="table-title" id="table-title" contenteditable="true" spellcheck="false"
         onkeydown="if(event.key==='Enter'){event.preventDefault();this.blur()}">27 NUTS</span>
       <span class="edit-icon" onclick="document.getElementById('table-title').focus()">✏️</span>
     </div>
-
-    <div class="top-row">
-      <div class="cups-section">
-        <span class="cups-label">总杯数</span>
-        <span class="cups-number" id="cups">0</span>
-        <div class="cup-btns">
-          <button class="btn btn-cup-sub" onclick="changeCup(-1)">−</button>
-          <button class="btn btn-cup-add" onclick="changeCup(1)">+</button>
-        </div>
-      </div>
-      <div class="timer-block">
-        <div class="timer-digits" id="timer">5:00</div>
-      </div>
+    <div class="cups-label">总杯数</div>
+    <div class="cups-number" id="cups">0</div>
+    <div class="cup-btns controls-area">
+      <button class="btn btn-cup-sub" onclick="changeCup(-1)">−</button>
+      <button class="btn btn-cup-add" onclick="changeCup(1)">+</button>
     </div>
+  </div>
 
-    <div class="progress-wrap"><div class="progress-fill" id="prog" style="width:100%"></div></div>
-    <div class="level-indicator" id="level-info">LEVEL 1 / 19 · BLIND 100</div>
+  <!-- 中：计时器 -->
+  <div class="col col-timer">
+    <div class="timer-digits" id="timer">5:00</div>
+    <div class="blind-now-big" id="blind-now">100 / 200</div>
+  </div>
 
-    <div class="level-bar">
-      <div class="blind-now">
-        <span class="blind-label">当前盲注</span>
-        <span class="blind-value" id="blind-now">100 / 200</span>
-      </div>
-      <div class="blind-next">
-        <span class="next-label">下一级别</span>
-        <span class="next-value" id="blind-next">200 / 400</span>
-      </div>
-    </div>
-
-    <div class="chips-row">
-      <div class="chip c-silver"><div class="chip-face"><div class="chip-num">27</div><div class="chip-nuts">NUTS·BAR</div><div class="chip-val">100</div></div></div>
-      <div class="chip c-orange"><div class="chip-face"><div class="chip-num">27</div><div class="chip-nuts">NUTS·BAR</div><div class="chip-val">1000</div></div></div>
-      <div class="chip c-red">   <div class="chip-face"><div class="chip-num">27</div><div class="chip-nuts">NUTS·BAR</div><div class="chip-val">5000</div></div></div>
-      <div class="chip c-purple"><div class="chip-face"><div class="chip-num">27</div><div class="chip-nuts">NUTS·BAR</div><div class="chip-val">20000</div></div></div>
-    </div>
-
-    <div class="controls">
-      <button class="btn btn-start" onclick="startTimer()">开始</button>
-      <button class="btn btn-pause" onclick="pauseTimer()">暂停</button>
-      <button class="btn btn-reset" onclick="resetTimer()">重置</button>
-    </div>
-
-    <div class="settings-row">
-      <span class="settings-label">每级时间（分钟）</span>
-      <input class="settings-input" type="number" id="dur" value="5" min="1" max="120" onchange="setDuration()">
-    </div>
-
-    <div class="finished-overlay" id="fin">
-      <div class="finished-text">GAME OVER</div>
-      <button class="btn btn-reset" onclick="resetTimer()">重新开始</button>
-    </div>
+  <!-- 右：下一级别 -->
+  <div class="col col-next">
+    <div class="next-label">下一级别</div>
+    <div class="next-value" id="blind-next">200 / 400</div>
   </div>
 
 </div>
 
+<!-- 底栏 -->
+<div class="bottombar">
+  <!-- 筹码 -->
+  <div class="chips-row" id="chips-row"></div>
+
+  <!-- 控制按钮 -->
+  <div class="controls-area">
+    <button class="btn btn-start" onclick="startTimer()">▶ 开始</button>
+    <button class="btn btn-pause" onclick="pauseTimer()">⏸ 暂停</button>
+    <button class="btn btn-reset" onclick="resetTimer()">↺ 重置</button>
+    <div class="settings-inline">
+      <span class="settings-label">每级</span>
+      <input class="settings-input" type="number" id="dur" value="5" min="1" max="120" onchange="setDuration()">
+      <span class="settings-label">分钟</span>
+    </div>
+  </div>
+</div>
+
 <script>
-  // ======= 密码 =======
+  // ── 密码 ──
   function pwSubmit() {
-    const val = document.getElementById('pw-input').value;
-    if (val === '272727') {
+    if (document.getElementById('pw-input').value === '272727') {
       document.getElementById('pw-overlay').classList.add('hidden');
     } else {
       const err = document.getElementById('pw-error');
@@ -628,43 +425,77 @@
     }
   }
 
-  // ======= 扑克时钟 =======
+  // ── 筹码 SVG ──
+  function chipSVG(bg, ring, band, val) {
+    const id = 'c' + val;
+    return `<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <path id="ta${id}" d="M18,58 A42,42 0 0,1 102,58"/>
+        <path id="tb${id}" d="M20,64 A42,42 0 0,0 100,64"/>
+      </defs>
+      <ellipse cx="60" cy="65" rx="50" ry="7" fill="rgba(0,0,0,0.4)"/>
+      <circle cx="60" cy="58" r="56" fill="${ring}"/>
+      <circle cx="60" cy="58" r="50" fill="${bg}"/>
+      <circle cx="60" cy="58" r="44" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="1.5"/>
+      <rect x="10" y="49" width="100" height="19" fill="${band}" rx="1.5"/>
+      <text x="16" y="64" font-family="Arial Black,sans-serif" font-size="27" font-weight="900" fill="white">27</text>
+      <text x="57" y="63" font-family="Arial Black,sans-serif" font-size="14" font-weight="900" fill="white">NUTS</text>
+      <text font-family="Arial,sans-serif" font-size="7.5" fill="rgba(255,255,255,0.8)" font-weight="bold" letter-spacing="1.8">
+        <textPath href="#ta${id}" startOffset="8%">27NUTS · BAR</textPath>
+      </text>
+      <text font-family="Arial,sans-serif" font-size="7.5" fill="rgba(255,255,255,0.65)" font-weight="bold" letter-spacing="1.8">
+        <textPath href="#tb${id}" startOffset="8%">27NUTS · BAR</textPath>
+      </text>
+    </svg>`;
+  }
+
+  const CHIPS = [
+    { bg:'#f07820', ring:'#b84e08', band:'#c05a10', label:'100'   },
+    { bg:'#5848b8', ring:'#362898', band:'#362898', label:'1000'  },
+    { bg:'#cc1020', ring:'#880010', band:'#880010', label:'5000'  },
+    { bg:'#282828', ring:'#101010', band:'#101010', label:'20000' },
+  ];
+
+  const row = document.getElementById('chips-row');
+  CHIPS.forEach(c => {
+    const wrap = document.createElement('div');
+    wrap.className = 'chip-wrap';
+    wrap.innerHTML = chipSVG(c.bg, c.ring, c.band, c.label) +
+      `<div class="chip-label">${c.label}</div>`;
+    row.appendChild(wrap);
+  });
+
+  // ── 时钟 ──
   const BLINDS = [];
   for (let sb = 100; sb <= 1900; sb += 100) BLINDS.push({ sb, bb: sb * 2 });
 
   const S = { cups:0, level:0, timeLeft:300, duration:300, running:false, iv:null };
 
   function fmt(sec) {
-    const m = Math.floor(sec / 60), s = sec % 60;
-    return `${m}:${s.toString().padStart(2,'0')}`;
+    return `${Math.floor(sec/60)}:${(sec%60).toString().padStart(2,'0')}`;
   }
 
   function render() {
     const b  = BLINDS[S.level];
     const nb = S.level < BLINDS.length - 1 ? BLINDS[S.level + 1] : null;
-
     const el = document.getElementById('timer');
     el.textContent = fmt(S.timeLeft);
-    el.className = 'timer-digits' + (S.timeLeft <= 30 && S.running ? ' warning' : '');
-
+    el.className   = 'timer-digits' + (S.timeLeft <= 30 && S.running ? ' warning' : '');
     document.getElementById('prog').style.width = (S.timeLeft / S.duration * 100) + '%';
     document.getElementById('blind-now').textContent  = `${b.sb.toLocaleString()} / ${b.bb.toLocaleString()}`;
     document.getElementById('blind-next').textContent = nb
       ? `${nb.sb.toLocaleString()} / ${nb.bb.toLocaleString()}` : '最终级别';
     document.getElementById('level-info').textContent =
-      `LEVEL ${S.level + 1} / ${BLINDS.length} · BLIND ${b.sb}`;
+      `LEVEL ${S.level + 1} / ${BLINDS.length}`;
   }
 
   function tick() {
     if (S.timeLeft > 0) {
       S.timeLeft--;
     } else if (S.level < BLINDS.length - 1) {
-      S.level++;
-      S.timeLeft = S.duration;
-      playBeep();
+      S.level++; S.timeLeft = S.duration; playBeep();
     } else {
-      clearInterval(S.iv);
-      S.running = false;
+      clearInterval(S.iv); S.running = false;
       document.getElementById('fin').classList.add('show');
     }
     render();
@@ -672,48 +503,38 @@
 
   function startTimer() {
     if (S.running) return;
-    S.running = true;
-    S.iv = setInterval(tick, 1000);
+    S.running = true; S.iv = setInterval(tick, 1000);
   }
-
   function pauseTimer() {
     if (!S.running) return;
-    clearInterval(S.iv);
-    S.running = false;
+    clearInterval(S.iv); S.running = false;
   }
-
   function resetTimer() {
-    clearInterval(S.iv);
-    S.running = false;
-    S.level = 0;
-    S.timeLeft = S.duration;
+    clearInterval(S.iv); S.running = false;
+    S.level = 0; S.timeLeft = S.duration;
     document.getElementById('fin').classList.remove('show');
     render();
   }
-
-  function changeCup(delta) {
-    S.cups = Math.max(0, S.cups + delta);
+  function changeCup(d) {
+    S.cups = Math.max(0, S.cups + d);
     document.getElementById('cups').textContent = S.cups;
   }
-
   function setDuration() {
-    const val = parseInt(document.getElementById('dur').value, 10);
-    if (!val || val < 1) return;
-    S.duration = val * 60;
+    const v = parseInt(document.getElementById('dur').value, 10);
+    if (!v || v < 1) return;
+    S.duration = v * 60;
     if (!S.running) { S.timeLeft = S.duration; render(); }
   }
-
   function playBeep() {
     try {
       const ctx = new (window.AudioContext || window.webkitAudioContext)();
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.connect(gain); gain.connect(ctx.destination);
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(880, ctx.currentTime);
-      gain.gain.setValueAtTime(0.3, ctx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 1);
-      osc.start(); osc.stop(ctx.currentTime + 1);
+      const o = ctx.createOscillator(), g = ctx.createGain();
+      o.connect(g); g.connect(ctx.destination);
+      o.type = 'sine';
+      o.frequency.setValueAtTime(880, ctx.currentTime);
+      g.gain.setValueAtTime(0.3, ctx.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 1);
+      o.start(); o.stop(ctx.currentTime + 1);
     } catch(e) {}
   }
 
