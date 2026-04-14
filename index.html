@@ -9,6 +9,97 @@
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
+    /* ── 密码浮窗 ── */
+    #pw-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: rgba(0,0,0,0.75);
+      backdrop-filter: blur(6px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    #pw-overlay.hidden { display: none; }
+
+    .pw-box {
+      background: linear-gradient(160deg, #1c1c1c, #141414);
+      border: 1px solid rgba(201,149,58,0.4);
+      border-radius: 14px;
+      padding: 32px 28px 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.7);
+      min-width: 260px;
+      position: relative;
+    }
+    .pw-box::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; height: 2px;
+      border-radius: 14px 14px 0 0;
+      background: linear-gradient(90deg, transparent, #c9953a, transparent);
+    }
+
+    .pw-title {
+      color: #c9953a;
+      font-size: 15px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+    }
+
+    .pw-input {
+      background: rgba(0,0,0,0.4);
+      border: 1px solid rgba(201,149,58,0.3);
+      border-radius: 8px;
+      color: #f5f0e8;
+      font-family: 'Oswald', sans-serif;
+      font-size: 22px;
+      letter-spacing: 6px;
+      text-align: center;
+      padding: 10px 16px;
+      width: 100%;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .pw-input:focus { border-color: #c9953a; }
+
+    .pw-error {
+      color: #e05a3a;
+      font-size: 12px;
+      letter-spacing: 2px;
+      height: 16px;
+      text-transform: uppercase;
+    }
+    .pw-error.shake {
+      animation: pwshake 0.35s ease;
+    }
+    @keyframes pwshake {
+      0%,100% { transform: translateX(0); }
+      20%      { transform: translateX(-7px); }
+      40%      { transform: translateX(7px); }
+      60%      { transform: translateX(-5px); }
+      80%      { transform: translateX(5px); }
+    }
+
+    .pw-btn {
+      background: linear-gradient(135deg, #a07018, #c9953a);
+      border: none;
+      border-radius: 8px;
+      color: #0c0c0c;
+      font-family: 'Oswald', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      padding: 10px 32px;
+      cursor: pointer;
+      transition: filter 0.15s, transform 0.12s;
+    }
+    .pw-btn:hover  { filter: brightness(1.12); }
+    .pw-btn:active { transform: scale(0.96); }
+
     /* ── 底色：黑色桌布质感 ── */
     body {
       background-color: #0c0c0c;
@@ -447,6 +538,14 @@
 </head>
 <body>
 
+<div id="pw-overlay">
+  <div class="pw-box">
+    <div class="pw-title">请输入密码</div>
+    <input class="pw-input" id="pw-input" type="password" maxlength="10" placeholder="······" autofocus onkeydown="if(event.key==='Enter')pwSubmit()">
+    <div class="pw-error" id="pw-error"></div>
+    <button class="pw-btn" onclick="pwSubmit()">确认</button>
+  </div>
+</div>
 
 <div class="page-title">27 NUTS · BAR</div>
 
@@ -575,6 +674,21 @@
 </div>
 
 <script>
+  // ======= 密码 =======
+  function pwSubmit() {
+    const val = document.getElementById('pw-input').value;
+    if (val === '272727') {
+      document.getElementById('pw-overlay').classList.add('hidden');
+    } else {
+      const err = document.getElementById('pw-error');
+      err.textContent = '密码错误';
+      err.classList.remove('shake');
+      void err.offsetWidth;
+      err.classList.add('shake');
+      document.getElementById('pw-input').value = '';
+    }
+  }
+
   // ======= 扑克时钟 =======
   const BLINDS = [];
   for (let sb = 100; sb <= 1900; sb += 100) BLINDS.push({ sb, bb: sb * 2 });
