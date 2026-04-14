@@ -26,7 +26,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 14px 28px 10px;
+      padding: 18px 32px 14px;
       border-bottom: 1px solid rgba(201,149,58,0.25);
       flex-shrink: 0;
       position: relative;
@@ -34,7 +34,7 @@
 
     .brand {
       color: #c9953a;
-      font-size: clamp(22px, 3vw, 36px);
+      font-size: clamp(28px, 4vw, 52px);
       font-weight: 700;
       letter-spacing: 8px;
       text-shadow: 0 0 20px rgba(201,149,58,0.6);
@@ -73,7 +73,7 @@
     .main {
       flex: 1;
       display: grid;
-      grid-template-columns: 1fr 1.6fr 1fr;
+      grid-template-columns: 1fr 1.4fr 1fr;
       gap: 0;
       padding: 0 24px;
       min-height: 0;
@@ -84,7 +84,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 16px 12px;
+      padding: 12px 16px;
     }
 
     /* 左列 — 总杯数 */
@@ -94,18 +94,18 @@
 
     .cups-label {
       color: #c9953a;
-      font-size: clamp(13px, 1.6vw, 20px);
-      letter-spacing: 3px;
+      font-size: clamp(24px, 3.5vw, 48px);
+      letter-spacing: 4px;
       text-transform: uppercase;
-      margin-bottom: 4px;
+      margin-bottom: 8px;
     }
 
     .cups-number {
       color: #f5f0e8;
-      font-size: clamp(80px, 14vw, 160px);
+      font-size: clamp(100px, 18vw, 200px);
       font-weight: 700;
       line-height: 1;
-      text-shadow: 0 0 40px rgba(245,240,232,0.15);
+      text-shadow: 0 0 60px rgba(245,240,232,0.2);
     }
 
     .cup-btns {
@@ -115,10 +115,10 @@
     }
 
     /* 中列 — 计时 */
-    .col-timer { gap: 8px; }
+    .col-timer { gap: 10px; }
 
     .timer-digits {
-      font-size: clamp(80px, 16vw, 180px);
+      font-size: clamp(90px, 18vw, 200px);
       font-weight: 700;
       color: #f5f0e8;
       font-family: 'Courier New', monospace;
@@ -135,25 +135,25 @@
     @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
 
     .blind-now-big {
-      color: rgba(255,255,255,0.85);
-      font-size: clamp(28px, 5vw, 64px);
+      color: rgba(255,255,255,0.9);
+      font-size: clamp(32px, 6vw, 76px);
       font-weight: 700;
       letter-spacing: 2px;
     }
 
     .next-wrap {
-      display: flex; flex-direction: column; align-items: center; gap: 2px;
-      margin-top: 4px;
+      display: flex; flex-direction: column; align-items: center; gap: 3px;
+      margin-top: 6px;
     }
     .next-label {
       color: #c9953a;
-      font-size: clamp(10px, 1.1vw, 14px);
+      font-size: clamp(11px, 1.2vw, 16px);
       letter-spacing: 2px;
       text-transform: uppercase;
     }
     .next-value {
       color: rgba(245,240,232,0.45);
-      font-size: clamp(16px, 2.4vw, 32px);
+      font-size: clamp(18px, 2.8vw, 38px);
       font-weight: 600;
       letter-spacing: 1px;
     }
@@ -179,7 +179,7 @@
     }
     .table-title {
       color: #c9953a;
-      font-size: clamp(22px, 3vw, 42px);
+      font-size: clamp(28px, 4vw, 56px);
       letter-spacing: 3px;
       text-transform: uppercase;
       outline: none;
@@ -212,14 +212,14 @@
     }
 
     .chip-wrap svg {
-      width: clamp(70px, 10vw, 130px);
-      height: clamp(70px, 10vw, 130px);
+      width: clamp(90px, 13vw, 160px);
+      height: clamp(90px, 13vw, 160px);
       filter: drop-shadow(0 4px 10px rgba(0,0,0,0.6));
     }
 
     .chip-label {
       color: rgba(255,255,255,0.55);
-      font-size: clamp(9px, 1vw, 13px);
+      font-size: clamp(20px, 2.8vw, 36px);
       letter-spacing: 1px;
     }
 
@@ -291,8 +291,8 @@
       border-radius: 8px;
       color: rgba(201,149,58,0.5);
       cursor: pointer;
-      font-size: 18px;
-      padding: 6px 10px;
+      font-size: 26px;
+      padding: 8px 14px;
       transition: all .2s;
     }
     .tv-btn:hover { color:#c9953a; border-color:#c9953a; }
@@ -302,6 +302,55 @@
     body.tv-mode .cup-btns      { display:none; }
     body.tv-mode .tv-btn        { opacity:.15; }
     body.tv-mode .tv-btn:hover  { opacity:1; }
+
+    /* ── 涨盲动画 ── */
+    .level-flash {
+      position: fixed; inset: 0; z-index: 200;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 18px;
+      background: rgba(0,0,0,0.82);
+      pointer-events: none;
+      opacity: 0;
+    }
+    .level-flash.show {
+      animation: flashAnim 3.2s ease forwards;
+    }
+    @keyframes flashAnim {
+      0%   { opacity:0; }
+      12%  { opacity:1; }
+      75%  { opacity:1; }
+      100% { opacity:0; }
+    }
+    .lf-tag {
+      color: #c9953a;
+      font-size: clamp(18px, 2.5vw, 32px);
+      letter-spacing: 6px;
+      text-transform: uppercase;
+      animation: none;
+    }
+    .lf-blinds {
+      color: #f5f0e8;
+      font-size: clamp(60px, 12vw, 140px);
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-shadow: 0 0 60px rgba(201,149,58,0.9), 0 0 120px rgba(201,149,58,0.4);
+      animation: scaleIn 0.45s cubic-bezier(0.34,1.56,0.64,1) both;
+      animation-delay: 0.15s;
+    }
+    .lf-level {
+      color: rgba(201,149,58,0.7);
+      font-size: clamp(14px, 1.8vw, 22px);
+      letter-spacing: 4px;
+    }
+    @keyframes scaleIn {
+      from { transform: scale(0.6); opacity:0; }
+      to   { transform: scale(1);   opacity:1; }
+    }
+    .lf-bar {
+      width: clamp(160px, 20vw, 280px); height: 3px;
+      background: linear-gradient(90deg, transparent, #c9953a, transparent);
+      border-radius: 2px;
+    }
 
     /* ── 结束遮罩 ── */
     .finished-overlay {
@@ -358,8 +407,8 @@
       border-radius: 8px;
       color: rgba(201,149,58,0.5);
       cursor: pointer;
-      font-size: 18px;
-      padding: 6px 10px;
+      font-size: 26px;
+      padding: 8px 14px;
       transition: all .2s;
     }
     .cfg-btn:hover { color:#c9953a; border-color:#c9953a; }
@@ -465,6 +514,14 @@
   </div>
 </div>
 
+<!-- 涨盲动画 -->
+<div class="level-flash" id="level-flash">
+  <div class="lf-tag">盲注上涨</div>
+  <div class="lf-bar"></div>
+  <div class="lf-blinds" id="lf-blinds">—</div>
+  <div class="lf-level" id="lf-level">LEVEL 2</div>
+</div>
+
 <!-- 结束遮罩 -->
 <div class="finished-overlay" id="fin">
   <div class="finished-text">GAME OVER</div>
@@ -531,7 +588,7 @@
     <button class="btn btn-reset" onclick="resetTimer()">↺ 重置</button>
     <div class="settings-inline">
       <span class="settings-label">每级</span>
-      <input class="settings-input" type="number" id="dur" value="5" min="1" max="120" onchange="setDuration()">
+      <input class="settings-input" type="number" id="dur" value="6" min="1" max="120" onchange="setDuration()">
       <span class="settings-label">分钟</span>
     </div>
   </div>
@@ -647,7 +704,50 @@
     }
   }
 
-  const S = { cups:0, level:0, timeLeft:300, duration:300, running:false, iv:null };
+  const S = { cups:0, level:0, timeLeft:360, duration:360, running:false, iv:null, warned:false };
+
+  // ── 提示音 ──
+  function playTone(freq, startTime, duration, ctx, gainVal = 0.25) {
+    const o = ctx.createOscillator();
+    const g = ctx.createGain();
+    o.connect(g); g.connect(ctx.destination);
+    o.type = 'sine';
+    o.frequency.setValueAtTime(freq, startTime);
+    g.gain.setValueAtTime(0, startTime);
+    g.gain.linearRampToValueAtTime(gainVal, startTime + 0.02);
+    g.gain.exponentialRampToValueAtTime(0.001, startTime + duration);
+    o.start(startTime); o.stop(startTime + duration);
+  }
+
+  // 1分钟警告：三声短音 叮叮叮
+  function playWarning() {
+    try {
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      [0, 0.28, 0.56].forEach((t, i) =>
+        playTone(880 + i * 110, ctx.currentTime + t, 0.22, ctx, 0.22));
+    } catch(e) {}
+  }
+
+  // 涨盲音效：上扬三音 + 持续余音
+  function playLevelUp() {
+    try {
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      [[523, 0], [659, 0.18], [784, 0.36], [1047, 0.58]].forEach(([f, t]) =>
+        playTone(f, ctx.currentTime + t, 0.55, ctx, 0.28));
+    } catch(e) {}
+  }
+
+  // ── 涨盲动画 ──
+  function showLevelFlash() {
+    const b = BLINDS[S.level];
+    document.getElementById('lf-blinds').textContent =
+      `${b.sb.toLocaleString()} / ${b.bb.toLocaleString()}`;
+    document.getElementById('lf-level').textContent = `LEVEL ${S.level + 1}`;
+    const el = document.getElementById('level-flash');
+    el.classList.remove('show');
+    void el.offsetWidth;
+    el.classList.add('show');
+  }
 
   function fmt(sec) {
     return `${Math.floor(sec/60)}:${(sec%60).toString().padStart(2,'0')}`;
@@ -670,8 +770,14 @@
   function tick() {
     if (S.timeLeft > 0) {
       S.timeLeft--;
+      if (S.timeLeft === 60 && !S.warned) {
+        S.warned = true;
+        playWarning();
+      }
     } else if (S.level < BLINDS.length - 1) {
-      S.level++; S.timeLeft = S.duration; playBeep();
+      S.level++; S.timeLeft = S.duration; S.warned = false;
+      playLevelUp();
+      showLevelFlash();
     } else {
       clearInterval(S.iv); S.running = false;
       document.getElementById('fin').classList.add('show');
@@ -690,7 +796,7 @@
   function resetTimer() {
     clearInterval(S.iv); S.running = false;
     S.level = 0; S.timeLeft = S.duration;
-    S.cups = 0;
+    S.cups = 0; S.warned = false;
     document.getElementById('cups').textContent = 0;
     document.getElementById('fin').classList.remove('show');
     render();
