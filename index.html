@@ -541,11 +541,11 @@
     .cfg-levels::-webkit-scrollbar-thumb { background: rgba(212,175,55,0.4); border-radius: 2px; }
 
     .cfg-level-item {
-      display: grid;
-      grid-template-columns: 1fr auto;
+      display: flex;
       align-items: center;
+      justify-content: space-between;
       gap: 12px;
-      padding: 8px 10px;
+      padding: 10px;
       border-radius: 8px;
       transition: background .15s, border-color .15s;
       border: 1px solid rgba(212,175,55,0.08);
@@ -591,14 +591,18 @@
     .cfg-level-content {
       display: flex;
       align-items: center;
-      gap: 12px;
-      width: 100%;
+      gap: 16px;
+      flex: 1;
     }
     .cfg-level-blinds {
       display: flex;
       align-items: center;
       gap: 6px;
       margin-top: 4px;
+    }
+    .cfg-level-content > div:first-child {
+      flex: 1;
+      min-width: 100px;
     }
     .cfg-blind-input {
       width: 50px;
