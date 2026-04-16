@@ -588,6 +588,38 @@
       letter-spacing: 1px;
       text-transform: uppercase;
     }
+    .cfg-level-content {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+    }
+    .cfg-level-blinds {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 4px;
+    }
+    .cfg-blind-input {
+      width: 50px;
+      background: rgba(0,0,0,0.4);
+      border: 1px solid rgba(212,175,55,0.3);
+      border-radius: 4px;
+      color: #d4af37;
+      padding: 4px 6px;
+      text-align: center;
+      font-size: 12px;
+      font-family: 'Oswald', sans-serif;
+      font-weight: 700;
+    }
+    .cfg-blind-input:focus {
+      outline: none;
+      border-color: #d4af37;
+    }
+    .cfg-blind-sep {
+      color: rgba(212,175,55,0.5);
+      font-size: 12px;
+    }
 
     .cfg-actions {
       display: flex; gap: 10px; justify-content: flex-end; align-items: center;
@@ -731,9 +763,9 @@
     { sb: 100, bb: 200, minutes: 15 },
     { sb: 200, bb: 400, minutes: 15 },
     { sb: 300, bb: 600, minutes: 10 },
+    { sb: 400, bb: 800, minutes: 10 },
     { sb: 500, bb: 1000, minutes: 10 },
-    { sb: 1000, bb: 2000, minutes: 10 },
-    { sb: 2000, bb: 4000, minutes: 9 },
+    { sb: 1000, bb: 2000, minutes: 9 },
     { sb: 3000, bb: 6000, minutes: 7 },
     { sb: 5000, bb: 10000, minutes: 7 },
     { sb: 10000, bb: 20000, minutes: 7 },
@@ -753,13 +785,19 @@
       const row = document.createElement('div');
       row.className = 'cfg-level-item';
       row.innerHTML = `
-        <div>
-          <div class="cfg-level-text">Lv${i + 1} &nbsp; ${b.sb.toLocaleString()} / ${b.bb.toLocaleString()}</div>
-          <div class="cfg-level-meta">当前 ${Math.round(b.duration / 60)} 分钟</div>
-        </div>
-        <div class="cfg-duration-wrap">
-          <input class="cfg-duration-input" type="number" id="cfg-min-${i}" min="1" max="120" value="${Math.round(b.duration / 60)}">
-          <span class="cfg-duration-unit">分钟</span>
+        <div class="cfg-level-content">
+          <div>
+            <div class="cfg-level-text">Level ${i + 1}</div>
+            <div class="cfg-level-blinds">
+              <input class="cfg-blind-input" type="number" id="cfg-sb-${i}" min="1" value="${b.sb}">
+              <span class="cfg-blind-sep">/</span>
+              <input class="cfg-blind-input" type="number" id="cfg-bb-${i}" min="1" value="${b.bb}">
+            </div>
+          </div>
+          <div class="cfg-duration-wrap">
+            <input class="cfg-duration-input" type="number" id="cfg-min-${i}" min="1" max="120" value="${Math.round(b.duration / 60)}">
+            <span class="cfg-duration-unit">分钟</span>
+          </div>
         </div>
       `;
       container.appendChild(row);
@@ -781,6 +819,15 @@
   }
   function applyCfg() {
     BLINDS_ALL.forEach((blind, i) => {
+      // 读取盲注值
+      const sbInput = document.getElementById(`cfg-sb-${i}`);
+      const bbInput = document.getElementById(`cfg-bb-${i}`);
+      const sb = parseInt(sbInput.value, 10) || 1;
+      const bb = parseInt(bbInput.value, 10) || 1;
+      blind.sb = Math.max(1, sb);
+      blind.bb = Math.max(1, bb);
+
+      // 读取时间值
       const input = document.getElementById(`cfg-min-${i}`);
       const minutes = parseInt(input.value, 10);
       blind.duration = (minutes && minutes > 0 ? minutes : 1) * 60;
