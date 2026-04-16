@@ -3,17 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>27 NUTS</title>
+  <title>微醺CLUB Poker Clock</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&display=swap');
     * { margin:0; padding:0; box-sizing:border-box; }
-
     /* ── 背景 ── */
     body {
       background: #0c0c0c;
       background-image:
-        repeating-linear-gradient(45deg,  rgba(255,255,255,0.01) 0 1px, transparent 1px 6px),
-        repeating-linear-gradient(-45deg, rgba(255,255,255,0.01) 0 1px, transparent 1px 6px);
+        repeating-linear-gradient(45deg,  rgba(212,175,55,0.04) 0 1px, transparent 1px 6px),
+        repeating-linear-gradient(-45deg, rgba(212,175,55,0.03) 0 1px, transparent 1px 6px);
       font-family: 'Oswald', 'Arial Black', sans-serif;
       min-height: 100vh;
       display: flex;
@@ -27,21 +26,22 @@
       align-items: center;
       justify-content: space-between;
       padding: 18px 32px 14px;
-      border-bottom: 1px solid rgba(201,149,58,0.25);
+      border-bottom: 1px solid rgba(212,175,55,0.25);
       flex-shrink: 0;
       position: relative;
     }
 
     .brand {
-      color: #c9953a;
+      color: #d4af37;
       font-size: clamp(28px, 4vw, 52px);
       font-weight: 700;
       letter-spacing: 8px;
-      text-shadow: 0 0 20px rgba(201,149,58,0.6);
+      text-shadow: 0 0 20px rgba(212,175,55,0.6);
+      visibility: hidden;
     }
 
     .level-info {
-      color: rgba(201,149,58,0.65);
+      color: rgba(212,175,55,0.65);
       font-size: clamp(12px, 1.4vw, 18px);
       letter-spacing: 2px;
       text-align: center;
@@ -58,7 +58,7 @@
     .progress-fill {
       height: 100%;
       border-radius: 4px;
-      background: linear-gradient(90deg, #7a5010, #c9953a, #ffd97a);
+      background: linear-gradient(90deg, #6d5c0f, #d4af37, #ff5572);
       transition: width 1s linear;
     }
 
@@ -89,11 +89,11 @@
 
     /* 左列 — 总杯数 */
     .col-cups {
-      border-right: 1px solid rgba(201,149,58,0.15);
+      border-right: 1px solid rgba(212,175,55,0.15);
     }
 
     .cups-label {
-      color: #c9953a;
+      color: #d4af37;
       font-size: clamp(24px, 3.5vw, 48px);
       letter-spacing: 4px;
       text-transform: uppercase;
@@ -146,7 +146,7 @@
       margin-top: 6px;
     }
     .next-label {
-      color: #c9953a;
+      color: #d4af37;
       font-size: clamp(11px, 1.2vw, 16px);
       letter-spacing: 2px;
       text-transform: uppercase;
@@ -160,7 +160,7 @@
 
     /* 右列 — 筹码 2×2 */
     .col-next {
-      border-left: 1px solid rgba(201,149,58,0.15);
+      border-left: 1px solid rgba(212,175,55,0.15);
     }
 
     /* 筹码 2×2 网格 */
@@ -178,7 +178,7 @@
       position: absolute; left: 50%; transform: translateX(-50%);
     }
     .table-title {
-      color: #c9953a;
+      color: #d4af37;
       font-size: clamp(28px, 4vw, 56px);
       letter-spacing: 3px;
       text-transform: uppercase;
@@ -189,9 +189,9 @@
       min-width: 30px;
       text-align: center;
     }
-    .table-title:focus { border-bottom-color: #c9953a; }
-    .edit-icon { color: rgba(201,149,58,.35); font-size:12px; cursor:pointer; }
-    .edit-icon:hover { color:#c9953a; }
+    .table-title:focus { border-bottom-color: #d4af37; }
+    .edit-icon { color: rgba(212,175,55,.35); font-size:12px; cursor:pointer; }
+    .edit-icon:hover { color:#d4af37; }
 
     /* ── 底栏 ── */
     .bottombar {
@@ -199,7 +199,7 @@
       align-items: center;
       justify-content: space-between;
       padding: 10px 28px 16px;
-      border-top: 1px solid rgba(201,149,58,0.2);
+      border-top: 1px solid rgba(212,175,55,0.2);
       gap: 16px;
       flex-shrink: 0;
     }
@@ -211,10 +211,13 @@
       gap: 4px;
     }
 
-    .chip-wrap svg {
-      width: clamp(90px, 13vw, 160px);
-      height: clamp(90px, 13vw, 160px);
-      filter: drop-shadow(0 4px 10px rgba(0,0,0,0.6));
+    .chip-wrap svg,
+    .chip-wrap img {
+      width: clamp(110px, 15vw, 190px);
+      height: clamp(110px, 15vw, 190px);
+      filter: drop-shadow(0 8px 18px rgba(0,0,0,0.28));
+      object-fit: contain;
+      display: block;
     }
 
     .chip-label {
@@ -250,20 +253,20 @@
 
     .btn-start  { background:linear-gradient(135deg,#2d6a30,#3d9142); color:#fff; }
     .btn-pause  { background:linear-gradient(135deg,#7a3d10,#c96820); color:#fff; }
-    .btn-reset  { background:linear-gradient(135deg,#6a1515,#a02020); color:#fff; }
-    .btn-cup-add { background:linear-gradient(135deg,#a07018,#c9953a); color:#0c0c0c; font-size:clamp(16px,2vw,22px); padding:5px 14px; border-radius:8px; font-weight:900; }
+    .btn-reset  { background:linear-gradient(135deg,#6a1515,#9d8226); color:#fff; }
+    .btn-cup-add { background:linear-gradient(135deg,#8b7620,#d4af37); color:#fff; font-size:clamp(16px,2vw,22px); padding:5px 14px; border-radius:8px; font-weight:900; }
     .btn-cup-sub { background:rgba(255,255,255,0.07); border:1px solid rgba(255,255,255,0.15); color:rgba(255,255,255,0.55); font-size:clamp(16px,2vw,22px); padding:5px 14px; border-radius:8px; font-weight:900; }
 
     .settings-inline {
       display: flex; align-items: center; gap: 8px;
     }
-    .settings-label { color:rgba(201,149,58,0.5); font-size:12px; letter-spacing:1px; text-transform:uppercase; }
+    .settings-label { color:rgba(212,175,55,0.5); font-size:12px; letter-spacing:1px; text-transform:uppercase; }
     .settings-input {
-      background:rgba(0,0,0,0.4); border:1px solid rgba(201,149,58,0.3);
-      color:#c9953a; padding:6px 8px; border-radius:6px; width:52px;
+      background:rgba(0,0,0,0.4); border:1px solid rgba(212,175,55,0.3);
+      color:#d4af37; padding:6px 8px; border-radius:6px; width:52px;
       text-align:center; font-size:14px; font-family:'Oswald',sans-serif; font-weight:bold;
     }
-    .settings-input:focus { outline:none; border-color:#c9953a; }
+    .settings-input:focus { outline:none; border-color:#d4af37; }
 
     /* 右下角浮动加减酒 */
     .cup-float {
@@ -275,27 +278,27 @@
       gap: 12px;
       z-index: 50;
       background: rgba(0,0,0,0.45);
-      border: 1px solid rgba(201,149,58,0.3);
+      border: 1px solid rgba(212,175,55,0.3);
       border-radius: 12px;
       padding: 8px 14px;
     }
     .cup-float-label {
-      color: #c9953a;
+      color: #d4af37;
       font-size: clamp(11px, 1.2vw, 15px);
       letter-spacing: 2px;
     }
     /* TV模式切换 */
     .tv-btn {
       background: none;
-      border: 1px solid rgba(201,149,58,0.3);
+      border: 1px solid rgba(212,175,55,0.3);
       border-radius: 8px;
-      color: rgba(201,149,58,0.5);
+      color: rgba(212,175,55,0.5);
       cursor: pointer;
       font-size: 26px;
       padding: 8px 14px;
       transition: all .2s;
     }
-    .tv-btn:hover { color:#c9953a; border-color:#c9953a; }
+    .tv-btn:hover { color:#d4af37; border-color:#d4af37; }
 
     /* TV模式：隐藏控制 */
     body.tv-mode .controls-area { display:none; }
@@ -322,7 +325,7 @@
       100% { opacity:0; }
     }
     .lf-tag {
-      color: #c9953a;
+      color: #d4af37;
       font-size: clamp(18px, 2.5vw, 32px);
       letter-spacing: 6px;
       text-transform: uppercase;
@@ -333,12 +336,12 @@
       font-size: clamp(60px, 12vw, 140px);
       font-weight: 700;
       letter-spacing: 2px;
-      text-shadow: 0 0 60px rgba(201,149,58,0.9), 0 0 120px rgba(201,149,58,0.4);
+      text-shadow: 0 0 60px rgba(212,175,55,0.9), 0 0 120px rgba(212,175,55,0.4);
       animation: scaleIn 0.45s cubic-bezier(0.34,1.56,0.64,1) both;
       animation-delay: 0.15s;
     }
     .lf-level {
-      color: rgba(201,149,58,0.7);
+      color: rgba(212,175,55,0.7);
       font-size: clamp(14px, 1.8vw, 22px);
       letter-spacing: 4px;
     }
@@ -348,7 +351,7 @@
     }
     .lf-bar {
       width: clamp(160px, 20vw, 280px); height: 3px;
-      background: linear-gradient(90deg, transparent, #c9953a, transparent);
+      background: linear-gradient(90deg, transparent, #d4af37, transparent);
       border-radius: 2px;
     }
 
@@ -359,7 +362,7 @@
       flex-direction:column; gap:20px; z-index:100;
     }
     .finished-overlay.show { display:flex; }
-    .finished-text { color:#c9953a; font-size:clamp(40px,7vw,80px); font-weight:700; letter-spacing:6px; text-shadow:0 0 40px rgba(201,149,58,0.8); }
+    .finished-text { color:#d4af37; font-size:clamp(40px,7vw,80px); font-weight:700; letter-spacing:6px; text-shadow:0 0 40px rgba(212,175,55,0.8); }
 
     /* ── 密码浮窗 ── */
     #pw-overlay {
@@ -371,7 +374,7 @@
 
     .pw-box {
       background:linear-gradient(160deg,#1c1c1c,#141414);
-      border:1px solid rgba(201,149,58,0.4); border-radius:14px;
+      border:1px solid rgba(212,175,55,0.4); border-radius:14px;
       padding:32px 28px 24px; display:flex; flex-direction:column;
       align-items:center; gap:16px; min-width:260px; position:relative;
       box-shadow:0 20px 60px rgba(0,0,0,0.7);
@@ -379,22 +382,22 @@
     .pw-box::before {
       content:''; position:absolute; top:0; left:0; right:0; height:2px;
       border-radius:14px 14px 0 0;
-      background:linear-gradient(90deg,transparent,#c9953a,transparent);
+      background:linear-gradient(90deg,transparent,#d4af37,transparent);
     }
-    .pw-title { color:#c9953a; font-size:15px; letter-spacing:3px; text-transform:uppercase; }
+    .pw-title { color:#d4af37; font-size:15px; letter-spacing:3px; text-transform:uppercase; }
     .pw-input {
-      background:rgba(0,0,0,0.4); border:1px solid rgba(201,149,58,0.3);
+      background:rgba(0,0,0,0.4); border:1px solid rgba(212,175,55,0.3);
       border-radius:8px; color:#f5f0e8; font-family:'Oswald',sans-serif;
       font-size:22px; letter-spacing:6px; text-align:center;
       padding:10px 16px; width:100%; outline:none; transition:border-color .2s;
     }
-    .pw-input:focus { border-color:#c9953a; }
+    .pw-input:focus { border-color:#d4af37; }
     .pw-error { color:#e05a3a; font-size:12px; letter-spacing:2px; height:16px; text-transform:uppercase; }
     .pw-error.shake { animation:pwshake .35s ease; }
     @keyframes pwshake { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-7px)} 40%{transform:translateX(7px)} 60%{transform:translateX(-5px)} 80%{transform:translateX(5px)} }
     .pw-btn {
-      background:linear-gradient(135deg,#a07018,#c9953a); border:none; border-radius:8px;
-      color:#0c0c0c; font-family:'Oswald',sans-serif; font-size:14px; font-weight:700;
+      background:linear-gradient(135deg,#8b7620,#d4af37); border:none; border-radius:8px;
+      color:#fff; font-family:'Oswald',sans-serif; font-size:14px; font-weight:700;
       letter-spacing:2px; padding:10px 32px; cursor:pointer; transition:filter .15s,transform .12s;
     }
     .pw-btn:hover { filter:brightness(1.12); }
@@ -420,8 +423,8 @@
       }
 
       /* 隐藏分隔线 */
-      .col-cups { border-right: none; border-bottom: 1px solid rgba(201,149,58,0.1); }
-      .col-next { border-left: none; border-top: 1px solid rgba(201,149,58,0.1); }
+      .col-cups { border-right: none; border-bottom: 1px solid rgba(212,175,55,0.1); }
+      .col-next { border-left: none; border-top: 1px solid rgba(212,175,55,0.1); }
 
       /* 列顺序：计时 → 杯数 → 筹码 */
       .col-cups  { order: 2; padding: 14px 12px 10px; }
@@ -443,7 +446,8 @@
         grid-template-columns: repeat(4, 1fr);
         gap: 6px;
       }
-      .chip-wrap svg {
+      .chip-wrap svg,
+      .chip-wrap img {
         width: clamp(52px, 14vw, 80px);
         height: clamp(52px, 14vw, 80px);
       }
@@ -468,21 +472,22 @@
       .timer-digits  { font-size: clamp(60px, 12vw, 110px); }
       .blind-now-big { font-size: clamp(20px, 4vw, 46px); }
       .cups-number   { font-size: clamp(60px, 12vw, 110px); }
-      .chip-wrap svg { width: clamp(50px, 8vw, 80px); height: clamp(50px, 8vw, 80px); }
+      .chip-wrap svg,
+      .chip-wrap img { width: clamp(50px, 8vw, 80px); height: clamp(50px, 8vw, 80px); }
     }
 
     /* ── 配置按钮 ── */
     .cfg-btn {
       background: none;
-      border: 1px solid rgba(201,149,58,0.3);
+      border: 1px solid rgba(212,175,55,0.3);
       border-radius: 8px;
-      color: rgba(201,149,58,0.5);
+      color: rgba(212,175,55,0.5);
       cursor: pointer;
       font-size: 26px;
       padding: 8px 14px;
       transition: all .2s;
     }
-    .cfg-btn:hover { color:#c9953a; border-color:#c9953a; }
+    .cfg-btn:hover { color:#d4af37; border-color:#d4af37; }
 
     /* ── 配置弹窗 ── */
     #cfg-overlay {
@@ -494,52 +499,94 @@
 
     .cfg-box {
       background: linear-gradient(160deg,#1c1c1c,#141414);
-      border: 1px solid rgba(201,149,58,0.4); border-radius: 14px;
-      padding: 28px 28px 22px; min-width: 300px; max-width: 400px;
+      border: 1px solid rgba(212,175,55,0.4); border-radius: 14px;
+      padding: 28px 28px 22px; min-width: 320px; max-width: 460px;
       box-shadow: 0 20px 60px rgba(0,0,0,0.7); position: relative;
     }
     .cfg-box::before {
       content:''; position:absolute; top:0; left:0; right:0; height:2px;
       border-radius:14px 14px 0 0;
-      background:linear-gradient(90deg,transparent,#c9953a,transparent);
+      background:linear-gradient(90deg,transparent,#d4af37,transparent);
     }
     .cfg-title {
-      color: #c9953a; font-size: 14px; letter-spacing: 3px;
+      color: #d4af37; font-size: 14px; letter-spacing: 3px;
       text-transform: uppercase; margin-bottom: 18px; text-align: center;
     }
+    .cfg-subtitle {
+      color: rgba(245,240,232,0.5);
+      font-size: 11px;
+      letter-spacing: 1px;
+      text-align: center;
+      margin: -8px 0 16px;
+    }
     .cfg-levels {
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 8px 16px; max-height: 320px; overflow-y: auto;
+      display: grid; grid-template-columns: 1fr;
+      gap: 8px; max-height: 360px; overflow-y: auto;
       padding-right: 4px; margin-bottom: 18px;
     }
     .cfg-levels::-webkit-scrollbar { width: 4px; }
     .cfg-levels::-webkit-scrollbar-track { background: rgba(255,255,255,0.04); }
-    .cfg-levels::-webkit-scrollbar-thumb { background: rgba(201,149,58,0.4); border-radius: 2px; }
+    .cfg-levels::-webkit-scrollbar-thumb { background: rgba(212,175,55,0.4); border-radius: 2px; }
 
     .cfg-level-item {
-      display: flex; align-items: center; gap: 8px; cursor: pointer;
-      padding: 5px 8px; border-radius: 6px;
-      transition: background .15s;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 10px;
+      border-radius: 8px;
+      transition: background .15s, border-color .15s;
+      border: 1px solid rgba(212,175,55,0.08);
     }
-    .cfg-level-item:hover { background: rgba(201,149,58,0.08); }
-    .cfg-level-item input[type=checkbox] {
-      accent-color: #c9953a; width: 15px; height: 15px; cursor: pointer; flex-shrink: 0;
-    }
+    .cfg-level-item:hover { background: rgba(212,175,55,0.08); border-color: rgba(212,175,55,0.18); }
     .cfg-level-text {
       color: rgba(245,240,232,0.75); font-size: 13px; letter-spacing: 1px;
       font-family: 'Oswald', sans-serif;
+    }
+    .cfg-level-meta {
+      color: rgba(212,175,55,0.72);
+      font-size: 11px;
+      letter-spacing: 1px;
+      margin-top: 2px;
+    }
+    .cfg-duration-wrap {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .cfg-duration-input {
+      width: 62px;
+      background: rgba(0,0,0,0.4);
+      border: 1px solid rgba(212,175,55,0.3);
+      border-radius: 6px;
+      color: #f5f0e8;
+      padding: 7px 8px;
+      text-align: center;
+      font-size: 14px;
+      font-family:'Oswald',sans-serif;
+      font-weight: 700;
+    }
+    .cfg-duration-input:focus {
+      outline: none;
+      border-color: #d4af37;
+    }
+    .cfg-duration-unit {
+      color: rgba(212,175,55,0.6);
+      font-size: 11px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
     }
 
     .cfg-actions {
       display: flex; gap: 10px; justify-content: flex-end; align-items: center;
     }
     .cfg-select-all {
-      color: rgba(201,149,58,0.5); font-size: 11px; letter-spacing: 1px;
+      color: rgba(212,175,55,0.5); font-size: 11px; letter-spacing: 1px;
       text-transform: uppercase; cursor: pointer; flex: 1;
       background: none; border: none; font-family: 'Oswald',sans-serif;
       text-align: left; padding: 0;
     }
-    .cfg-select-all:hover { color: #c9953a; }
+    .cfg-select-all:hover { color: #d4af37; }
     .cfg-cancel {
       background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12);
       border-radius: 8px; color: rgba(255,255,255,0.45);
@@ -549,8 +596,8 @@
     }
     .cfg-cancel:hover { filter: brightness(1.3); }
     .cfg-confirm {
-      background: linear-gradient(135deg,#a07018,#c9953a); border: none;
-      border-radius: 8px; color: #0c0c0c;
+      background: linear-gradient(135deg,#8b7620,#d4af37); border: none;
+      border-radius: 8px; color: #fff;
       font-family: 'Oswald',sans-serif; font-size: 13px; font-weight: 700;
       letter-spacing: 2px; padding: 8px 22px; cursor: pointer;
       transition: filter .15s, transform .12s;
@@ -564,24 +611,14 @@
 <!-- 配置弹窗 -->
 <div id="cfg-overlay" class="hidden">
   <div class="cfg-box">
-    <div class="cfg-title">选择启用的级别</div>
+    <div class="cfg-title">设置升盲时间</div>
+    <div class="cfg-subtitle">共 10 个级别，每级可单独设置分钟数</div>
     <div class="cfg-levels" id="cfg-levels"></div>
     <div class="cfg-actions">
-      <button class="cfg-select-all" onclick="cfgToggleAll()">全选 / 全不选</button>
+      <button class="cfg-select-all" onclick="resetDefaultDurations()">恢复默认</button>
       <button class="cfg-cancel" onclick="closeCfg()">取消</button>
       <button class="cfg-confirm" onclick="applyCfg()">确认</button>
     </div>
-  </div>
-</div>
-
-<!-- 密码 -->
-<div id="pw-overlay">
-  <div class="pw-box">
-    <div class="pw-title">请输入密码</div>
-    <input class="pw-input" id="pw-input" type="password" maxlength="10" placeholder="······"
-      autofocus onkeydown="if(event.key==='Enter')pwSubmit()">
-    <div class="pw-error" id="pw-error"></div>
-    <button class="pw-btn" onclick="pwSubmit()">确认</button>
   </div>
 </div>
 
@@ -601,10 +638,10 @@
 
 <!-- 顶栏 -->
 <div class="topbar">
-  <div class="brand">27 NUTS · BAR</div>
+  <div class="brand">微醺Club</div>
   <div class="table-title-wrap">
     <span class="table-title" id="table-title" contenteditable="true" spellcheck="false"
-      onkeydown="if(event.key==='Enter'){event.preventDefault();this.blur()}">27 NUTS</span>
+      onkeydown="if(event.key==='Enter'){event.preventDefault();this.blur()}">微醺Club</span>
     <span class="edit-icon" onclick="document.getElementById('table-title').focus()">✏️</span>
   </div>
   <div class="topbar-right">
@@ -624,11 +661,11 @@
 
   <!-- 中：计时器 -->
   <div class="col col-timer">
-    <div class="level-info" id="level-info">LEVEL 1 / 25</div>
+    <div class="level-info" id="level-info">LEVEL 1 / 10</div>
     <div class="progress-wrap" style="width:180px;margin-bottom:6px">
       <div class="progress-fill" id="prog" style="width:100%"></div>
     </div>
-    <div class="timer-digits" id="timer">5:00</div>
+    <div class="timer-digits" id="timer">15:00</div>
     <div class="blind-now-big" id="blind-now">100 / 200</div>
     <div class="next-wrap">
       <div class="next-label">下一级别</div>
@@ -657,92 +694,63 @@
     <button class="btn btn-start" onclick="startTimer()">▶ 开始</button>
     <button class="btn btn-pause" onclick="pauseTimer()">⏸ 暂停</button>
     <button class="btn btn-reset" onclick="resetTimer()">↺ 重置</button>
-    <div class="settings-inline">
-      <span class="settings-label">每级</span>
-      <input class="settings-input" type="number" id="dur" value="6" min="1" max="120" onchange="setDuration()">
-      <span class="settings-label">分钟</span>
-    </div>
   </div>
 </div>
 
 <script>
-  // ── 密码 ──
-  function pwSubmit() {
-    if (document.getElementById('pw-input').value === '27') {
-      document.getElementById('pw-overlay').classList.add('hidden');
-    } else {
-      const err = document.getElementById('pw-error');
-      err.textContent = '密码错误';
-      err.classList.remove('shake');
-      void err.offsetWidth;
-      err.classList.add('shake');
-      document.getElementById('pw-input').value = '';
-    }
-  }
-
-  // ── 筹码 SVG ──
-  function chipSVG(bg, ring, band, val) {
-    const id = 'c' + val;
-    return `<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <path id="ta${id}" d="M18,58 A42,42 0 0,1 102,58"/>
-        <path id="tb${id}" d="M20,64 A42,42 0 0,0 100,64"/>
-      </defs>
-      <ellipse cx="60" cy="65" rx="50" ry="7" fill="rgba(0,0,0,0.4)"/>
-      <circle cx="60" cy="58" r="56" fill="${ring}"/>
-      <circle cx="60" cy="58" r="50" fill="${bg}"/>
-      <circle cx="60" cy="58" r="44" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="1.5"/>
-      <rect x="10" y="49" width="100" height="19" fill="${band}" rx="1.5"/>
-      <text x="16" y="64" font-family="Arial Black,sans-serif" font-size="27" font-weight="900" fill="white">27</text>
-      <text x="57" y="63" font-family="Arial Black,sans-serif" font-size="14" font-weight="900" fill="white">NUTS</text>
-      <text font-family="Arial,sans-serif" font-size="7.5" fill="rgba(255,255,255,0.8)" font-weight="bold" letter-spacing="1.8">
-        <textPath href="#ta${id}" startOffset="8%">27NUTS · BAR</textPath>
-      </text>
-      <text font-family="Arial,sans-serif" font-size="7.5" fill="rgba(255,255,255,0.65)" font-weight="bold" letter-spacing="1.8">
-        <textPath href="#tb${id}" startOffset="8%">27NUTS · BAR</textPath>
-      </text>
-    </svg>`;
-  }
-
   const CHIPS = [
-    { bg:'#2e2e2e', ring:'#585858', band:'#1a1a1a', label:'100'  },
-    { bg:'#cc1020', ring:'#880010', band:'#880010', label:'500'  },
-    { bg:'#f07820', ring:'#b84e08', band:'#c05a10', label:'1000' },
-    { bg:'#5848b8', ring:'#362898', band:'#362898', label:'5000' },
+    { src:'./assets/chip-100.png', label:'100' },
+    { src:'./assets/chip-1000.png', label:'1000' },
+    { src:'./assets/chip-5000.png', label:'5000' },
+    { src:'./assets/chip-10000.png', label:'10000' },
   ];
 
   const grid = document.getElementById('chips-grid');
   CHIPS.forEach(c => {
     const wrap = document.createElement('div');
     wrap.className = 'chip-wrap';
-    wrap.innerHTML = chipSVG(c.bg, c.ring, c.band, c.label) +
+    wrap.innerHTML = `<img src="${c.src}" alt="筹码 ${c.label}">` +
       `<div class="chip-label">${c.label}</div>`;
     grid.appendChild(wrap);
   });
 
   // ── 时钟 ──
-  const BLINDS_ALL = [
-    100,200,300,400,500,600,700,800,900,1000,
-    1500,2000,3000,4000,5000,6000,7000,8000,9000,10000,
-    15000,20000,30000,40000,50000
-  ].map(sb => ({ sb, bb: sb * 2 }));
-
-  // 默认全部启用
-  const activeFlags = BLINDS_ALL.map(() => true);
-  let BLINDS = [...BLINDS_ALL];
+  const DEFAULT_LEVELS = [
+    { sb: 100, bb: 200, minutes: 15 },
+    { sb: 200, bb: 400, minutes: 15 },
+    { sb: 300, bb: 600, minutes: 10 },
+    { sb: 500, bb: 1000, minutes: 10 },
+    { sb: 1000, bb: 2000, minutes: 10 },
+    { sb: 2000, bb: 4000, minutes: 9 },
+    { sb: 3000, bb: 6000, minutes: 7 },
+    { sb: 5000, bb: 10000, minutes: 7 },
+    { sb: 10000, bb: 20000, minutes: 7 },
+    { sb: 20000, bb: 40000, minutes: 7 },
+  ];
+  const BLINDS_ALL = DEFAULT_LEVELS.map(level => ({
+    ...level,
+    duration: level.minutes * 60,
+  }));
+  let BLINDS = BLINDS_ALL;
 
   // ── 配置弹窗 ──
   function buildCfgList() {
     const container = document.getElementById('cfg-levels');
     container.innerHTML = '';
     BLINDS_ALL.forEach((b, i) => {
-      const label = document.createElement('label');
-      label.className = 'cfg-level-item';
-      label.innerHTML = `
-        <input type="checkbox" id="cfg-cb-${i}" ${activeFlags[i] ? 'checked' : ''}>
-        <span class="cfg-level-text">Lv${i+1} &nbsp; ${b.sb.toLocaleString()} / ${b.bb.toLocaleString()}</span>
+      const row = document.createElement('div');
+      row.className = 'cfg-level-item';
+      row.innerHTML = `
+        <div>
+          <div class="cfg-level-text">Lv${i + 1} &nbsp; ${b.sb.toLocaleString()} / ${b.bb.toLocaleString()}</div>
+          <div class="cfg-level-meta">当前 ${Math.round(b.duration / 60)} 分钟</div>
+        </div>
+        <div class="cfg-duration-wrap">
+          <input class="cfg-duration-input" type="number" id="cfg-min-${i}" min="1" max="120" value="${Math.round(b.duration / 60)}">
+          <span class="cfg-duration-unit">分钟</span>
+        </div>
       `;
-      container.appendChild(label);
+      container.appendChild(row);
     });
   }
 
@@ -753,29 +761,30 @@
   function closeCfg() {
     document.getElementById('cfg-overlay').classList.add('hidden');
   }
-  function cfgToggleAll() {
-    const cbs = document.querySelectorAll('#cfg-levels input[type=checkbox]');
-    const anyChecked = [...cbs].some(cb => cb.checked);
-    cbs.forEach(cb => cb.checked = !anyChecked);
+  function resetDefaultDurations() {
+    BLINDS_ALL.forEach((blind, i) => {
+      blind.duration = DEFAULT_LEVELS[i].minutes * 60;
+    });
+    buildCfgList();
   }
   function applyCfg() {
-    const cbs = document.querySelectorAll('#cfg-levels input[type=checkbox]');
-    let hasAny = false;
-    cbs.forEach((cb, i) => { activeFlags[i] = cb.checked; if (cb.checked) hasAny = true; });
-    if (!hasAny) { activeFlags[0] = true; } // 至少保留一级
-    BLINDS = BLINDS_ALL.filter((_, i) => activeFlags[i]);
+    BLINDS_ALL.forEach((blind, i) => {
+      const input = document.getElementById(`cfg-min-${i}`);
+      const minutes = parseInt(input.value, 10);
+      blind.duration = (minutes && minutes > 0 ? minutes : 1) * 60;
+    });
+    BLINDS = BLINDS_ALL;
     closeCfg();
     if (!S.running) {
-      S.level = 0; S.timeLeft = S.duration;
+      S.level = 0; syncLevelTiming();
       render();
     } else {
-      // 当前级别超出范围则回到最后一级
-      if (S.level >= BLINDS.length) S.level = BLINDS.length - 1;
+      syncLevelTiming(false);
       render();
     }
   }
 
-  const S = { cups:0, level:0, timeLeft:360, duration:360, running:false, iv:null, warned:false };
+  const S = { cups:0, level:0, timeLeft:BLINDS[0].duration, duration:BLINDS[0].duration, running:false, iv:null, warned:false };
 
   // ── 提示音 ──
   function playTone(freq, startTime, duration, ctx, gainVal = 0.25) {
@@ -824,13 +833,23 @@
     return `${Math.floor(sec/60)}:${(sec%60).toString().padStart(2,'0')}`;
   }
 
+  function syncLevelTiming(resetTimeLeft = true) {
+    const current = BLINDS[S.level];
+    S.duration = current.duration;
+    if (resetTimeLeft) {
+      S.timeLeft = current.duration;
+    } else if (S.timeLeft > current.duration) {
+      S.timeLeft = current.duration;
+    }
+  }
+
   function render() {
     const b  = BLINDS[S.level];
     const nb = S.level < BLINDS.length - 1 ? BLINDS[S.level + 1] : null;
     const el = document.getElementById('timer');
     el.textContent = fmt(S.timeLeft);
     el.className   = 'timer-digits' + (S.timeLeft <= 30 && S.running ? ' warning' : '');
-    document.getElementById('prog').style.width = (S.timeLeft / S.duration * 100) + '%';
+    document.getElementById('prog').style.width = (Math.max(0, Math.min(100, S.timeLeft / S.duration * 100))) + '%';
     document.getElementById('blind-now').textContent  = `${b.sb.toLocaleString()} / ${b.bb.toLocaleString()}`;
     document.getElementById('blind-next').textContent = nb
       ? `${nb.sb.toLocaleString()} / ${nb.bb.toLocaleString()}` : '最终级别';
@@ -846,7 +865,9 @@
         playWarning();
       }
     } else if (S.level < BLINDS.length - 1) {
-      S.level++; S.timeLeft = S.duration; S.warned = false;
+      S.level++;
+      syncLevelTiming();
+      S.warned = false;
       playLevelUp();
       showLevelFlash();
     } else {
@@ -866,7 +887,7 @@
   }
   function resetTimer() {
     clearInterval(S.iv); S.running = false;
-    S.level = 0; S.timeLeft = S.duration;
+    S.level = 0; syncLevelTiming();
     S.cups = 0; S.warned = false;
     document.getElementById('cups').textContent = 0;
     document.getElementById('fin').classList.remove('show');
@@ -875,12 +896,6 @@
   function changeCup(d) {
     S.cups = Math.max(0, S.cups + d);
     document.getElementById('cups').textContent = S.cups;
-  }
-  function setDuration() {
-    const v = parseInt(document.getElementById('dur').value, 10);
-    if (!v || v < 1) return;
-    S.duration = v * 60;
-    if (!S.running) { S.timeLeft = S.duration; render(); }
   }
   function toggleTV() {
     document.body.classList.toggle('tv-mode');
