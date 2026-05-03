@@ -660,7 +660,7 @@
 <div id="cfg-overlay" class="hidden">
   <div class="cfg-box">
     <div class="cfg-title">设置升盲时间</div>
-    <div class="cfg-subtitle">共 10 个级别，每级可单独设置分钟数</div>
+    <div class="cfg-subtitle" id="cfg-subtitle">共 20 个级别，每级可单独设置分钟数</div>
     <div class="cfg-levels" id="cfg-levels"></div>
     <div class="cfg-actions">
       <button class="cfg-select-all" onclick="resetDefaultDurations()">恢复默认</button>
@@ -709,7 +709,7 @@
 
   <!-- 中：计时器 -->
   <div class="col col-timer">
-    <div class="level-info" id="level-info">LEVEL 1 / 10</div>
+    <div class="level-info" id="level-info">LEVEL 1 / 20</div>
     <div class="progress-wrap" style="width:180px;margin-bottom:6px">
       <div class="progress-fill" id="prog" style="width:100%"></div>
     </div>
@@ -774,6 +774,16 @@
     { sb: 5000, bb: 10000, minutes: 7 },
     { sb: 10000, bb: 20000, minutes: 7 },
     { sb: 20000, bb: 40000, minutes: 7 },
+    { sb: 30000, bb: 60000, minutes: 7 },
+    { sb: 40000, bb: 80000, minutes: 7 },
+    { sb: 50000, bb: 100000, minutes: 7 },
+    { sb: 60000, bb: 120000, minutes: 7 },
+    { sb: 80000, bb: 160000, minutes: 7 },
+    { sb: 100000, bb: 200000, minutes: 7 },
+    { sb: 150000, bb: 300000, minutes: 7 },
+    { sb: 200000, bb: 400000, minutes: 7 },
+    { sb: 300000, bb: 600000, minutes: 7 },
+    { sb: 500000, bb: 1000000, minutes: 7 },
   ];
   const BLINDS_ALL = DEFAULT_LEVELS.map(level => ({
     ...level,
@@ -784,6 +794,8 @@
   // ── 配置弹窗 ──
   function buildCfgList() {
     const container = document.getElementById('cfg-levels');
+    document.getElementById('cfg-subtitle').textContent =
+      `共 ${BLINDS_ALL.length} 个级别，每级可单独设置盲注和分钟数`;
     container.innerHTML = '';
     BLINDS_ALL.forEach((b, i) => {
       const row = document.createElement('div');
